@@ -1,0 +1,32 @@
+.row
+  .col-12
+    .card.card-default
+      .card-header.card-header-border-bottom.row
+        .col-md-2.col-4
+          h2 = 'User Management'
+        .filters.col-md-6.col-8.d-flex.justify-content-center
+          = form_tag users_path, class: 'form w-100', method: :get do
+            .row
+              .col-6.d-flex.justify-content-end.p-0
+                = select_tag :filter,
+                        options_for_select([['All'], ['Active'], ['Inactive']], params[:filter]),
+                        class: 'form-control input-sm form-control-sm mr-2'
+              .col-6
+                = button_tag type: 'submit', name: nil, class: 'btn btn-sm btn-success'
+                  i.mdi.mdi-filter.mr-1 role="status"
+                  span.spinner-border.spinner-border-sm.mr-2.d-none aria-hidden="true" role="status"
+                  span = 'Filter'
+        div.d-flex.d-none
+      .card-body
+        = content_tag :table, role: :datatable, style: 'width: 100%',
+                id: 'responsive-data-table-ajax',
+                class: 'table dt-responsive nowrap',
+                data: { url: users_path(format: :json) } do
+          thead
+            tr
+              th = 'SL'
+              th = 'Email'
+              th = 'Status'
+              th.nosort.actions = 'Actions'
+          tbody
+

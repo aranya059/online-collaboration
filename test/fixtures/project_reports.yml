@@ -1,0 +1,15 @@
+# Read about fixtures at https://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  title: MyString
+  code: MyString
+  creator: one
+  company: one
+  representative: one
+
+two:
+  title: MyString
+  code: MyString
+  creator: two
+  company: two
+  representative: two

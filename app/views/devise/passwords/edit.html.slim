@@ -1,0 +1,33 @@
+= simple_form_for(resource, as: resource_name, url: password_path(resource_name), html: { method: :put }) do |f|
+  .container.d-flex.flex-column.justify-content-between.vh-100
+    .row.justify-content-center.mt-5
+      .col-xl-5.col-lg-6.col-md-10
+        .card
+          .bg-brand
+            .card-header.bg-brand.mx-auto.justify-content-center.d-flex
+          .card-body.pb-5.pt-3.px-5
+            h3.text-brand.mb-4.text-center Change your password
+
+            - if f.error_notification.present?
+              ul
+                li.alert-danger.py-1.px-3.mx-auto.mb-4.text-center = f.error_notification
+            .row
+              .d-none
+                = f.input :reset_password_token, as: :hidden
+              .form-group.col-md-12.mb-4
+                label.text-muted New password
+                span.req-field.ml-1 title="required" *
+                = f.password_field :password,
+                        required: true,
+                        autofocus: true,
+                        placeholder: 'New password',
+                        class: 'form-control input-sm form-control-sm'
+              .form-group.col-md-12.mb-4
+                label.text-muted Confirm new password
+                span.req-field.ml-1 title="required" *
+                = f.password_field :password_confirmation,
+                        required: true,
+                        placeholder: 'Confirm password',
+                        class: 'form-control input-sm form-control-sm'
+              .col-md-12
+                button.btn.btn-success.btn-block.text-white.my-2 type="submit" Change my password

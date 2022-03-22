@@ -1,0 +1,115 @@
+.container.d-flex.flex-column.justify-content-between.align-items-center.vh-100
+  .row.justify-content-center.mt-5
+    .col-xl-6.col-lg-6.col-md-6
+      .card
+        .bg-brand
+          .card-header.bg-brand.mx-auto.justify-content-center.d-flex
+        .card-body.px-5.pt-3.pb-5
+          h2.text-brand.mb-4.text-center Sign Up
+          - if resource.errors.any?
+            ul.mb-4.py-2.alert-danger
+              - resource.errors.full_messages.each do |message|
+                li.alert-danger.py-1.px-3 = message
+          #signup-form
+            = simple_form_for(resource, as: resource_name, url: registration_path(resource_name)) do |f|
+              - flash.each do |key, value|
+                p.text-danger.mb-3 = value
+              .row
+                .form-group.col-12
+                  label.text-muted First Name
+                  span.req-field.ml-1 title="required" *
+                  = f.text_field :first_name,
+                          required: true,
+                          placeholder: 'First Name',
+                          class: 'form-control input-sm form-control-sm'
+
+                .form-group.col-12
+                  label.text-muted Last Name
+                  span.req-field.ml-1 title="required" *
+                  = f.text_field :last_name,
+                          required: true,
+                          placeholder: 'Last Name',
+                          class: 'form-control input-sm form-control-sm'
+
+                .form-group.col-12
+                  label.text-muted Email
+                  span.req-field.ml-1 title="required" *
+                  = f.email_field :email,
+                          pattern: '[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,4}$',
+                          required: true,
+                          placeholder: 'Email',
+                          class: 'form-control input-sm form-control-sm'
+
+                .form-group.col-12
+                  label.text-muted Phone Number
+                  span.req-field.ml-1 title="required" *
+                  = f.text_field :phone_number,
+                          required: true,
+                          placeholder: 'Phone Number',
+                          class: 'form-control input-sm form-control-sm'
+
+                .form-group.col-12
+                  label.text-muted Gender
+                  span.req-field.ml-1 title="required" *
+                  = f.select :gender,
+                          User.genders.keys.to_a, { prompt: 'Select one' },
+                          required: true,
+                          class: 'form-control input-sm form-control-sm border-brand'
+
+                .form-group.col-12
+                  label.text-muted Password
+                  span.req-field.ml-1 title="required" *
+                  = f.password_field :password,
+                          required: true,
+                          placeholder: 'Password',
+                          class: 'form-control input-sm form-control-sm'
+
+                .form-group.col-12
+                  label.text-muted Confirm password
+                  span.req-field.ml-1 title="required" *
+                  = f.password_field :password_confirmation,
+                          required: true,
+                          placeholder: 'Confirm Password',
+                          class: 'form-control input-sm form-control-sm'
+
+                .form-group.col-12.mb-2
+                  = image_pack_tag 'sample-profile-picture.jpg',
+                          alt: 'profile picture sample',
+                          id: 'image-preview',
+                          class: 'w-75 d-flex mx-auto border mb-2'
+
+                  = button_tag type: 'button',
+                          class: 'button btn btn-block btn-light',
+                          id: 'image-upload'
+                    i.mdi.mdi-camera.mt-0.mr-1 role="status"
+                    span.spinner-border.spinner-border-sm.mr-1.d-none aria-hidden="true" role="status"
+                    span Choose Image
+
+                  = f.file_field :image,
+                          id: 'image-input',
+                          accept: ".jpeg, .jpg, .png",
+                          class: 'd-none'
+
+                .form-group.col-12.mb-4
+                  = image_pack_tag 'signature-icon.jpg',
+                          alt: 'signature sample image',
+                          id: 'signature-preview',
+                          class: 'w-75 d-flex mx-auto border mb-4'
+
+                  = button_tag type: 'button',
+                          class: 'button btn btn-block btn-light',
+                          id: 'sign-upload'
+                    i.mdi.mdi-pen.mt-0.mr-1 role="status"
+                    span.spinner-border.spinner-border-sm.mr-1.d-none aria-hidden="true" role="status"
+                    span Select Signature
+
+                  = f.file_field :signature,
+                          id: 'sign-input',
+                          accept: ".jpeg, .jpg, .png",
+                          class: 'd-none'
+
+                .col-md-12
+                  button.btn.btn-brand.btn-block.text-white.mb-2 type="submit"  Sign up
+                  = link_to 'Log In',
+                          new_session_path(resource_name),
+                          class: 'btn btn-block btn-primary text-white'

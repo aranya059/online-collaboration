@@ -1,0 +1,141 @@
+#profile-update
+  div.bg-white.border.rounded
+    - add_breadcrumb current_user.full_name
+    - add_breadcrumb 'edit'
+    = simple_form_for(resource,
+            as: resource_name,
+            url: registration_path(resource_name),
+            html: { method: :put }) do |f|
+      div.row.no-gutters
+        div.col-lg-4.col-xl-3
+          div.profile-content-left.profile-left-spacing.pt-5.pb-3.px-3.px-xl-5
+            .card.text-center.widget-profile.px-0.border-0
+              .mx-auto.mt-3
+                .image-container
+                  = image_tag current_user.displayed_image,
+                          alt: 'User Image',
+                          id: 'user-image',
+                          class: 'circular-image'
+                  .overlay
+                    .text.mdi.mdi-pencil#image-upload
+              .card-body
+                = f.file_field :image,
+                        as: :file,
+                        class: 'd-none',
+                        accept: ".jpeg, .jpg, .png",
+                        id: 'image-input'
+                h4.py-1.text-brand = current_user.full_name
+                p.text-muted = current_user.designation
+
+                = image_tag current_user.get_signature,
+                        size: "150x70",
+                        class: 'btn d-flex justify-content-center mx-auto border-bottom mb-1',
+                        id: 'sign-upload'
+
+                = f.file_field :signature,
+                              id: 'sign-input',
+                              accept: ".jpeg, .jpg, .png",
+                              class: 'd-none'
+                .mdi.mdi-pen.text-brand.h3#edit-sign title="Edit Initial"
+
+            hr.w-100
+            .contact-info
+              p.text-dark.font-weight-medium.pt-4.mb-2.mdi.mdi-email-outline.text-brand = " Email Address"
+              p.text-muted.ml-1 = current_user.email
+              p.text-dark.font-weight-medium.pt-4.mb-2.mdi.mdi-phone.text-brand = " Phone Number"
+              p.text-muted.ml-1 = current_user.phone_number
+              p.text-dark.font-weight-medium.pt-4.mb-2.mdi.mdi-gender-male-female.text-brand = " Gender"
+              p.text-muted.ml-1 = current_user.gender
+        div.col-lg-8.col-xl-9
+          div.profile-content-right.profile-right-spacing
+            div.tab-content.px-3.px-xl-5
+              div.tab-content.px-3.px-xl-5#myTabContent
+                #settings.tab-pane.fade.active.show aria-labelledby="settings-tab" role="tabpanel"
+                  .tab-pane-content.mt-5
+                    .text-center.text-danger.h4.my-2 = f.error_notification
+                    - if resource.errors.full_messages.present?
+                      ul.mb-4.py-2.alert-danger
+                        - resource.errors.full_messages.each do |message|
+                          li.alert-danger.py-1.px-3 = message
+
+                    h2.text-brand.mb-4.mdi.mdi-account-circle = " Personal"
+                    .row.mb-2
+                      .form-group.col-lg-6.col-md-12
+                        label.text-muted First Name
+                        span.req-field.ml-1 title="required" *
+                        = f.text_field :first_name,
+                                required: true,
+                                class: 'form-control form-control-sm input-sm'
+
+                      .form-group.col-lg-6.col-md-12
+                        label.text-muted Last Name
+                        span.req-field.ml-1 title="required" *
+                        = f.text_field :last_name,
+                                required: true,
+                                class: 'form-control form-control-sm input-sm'
+
+                      .form-group.col-lg-6.col-md-12
+                        label.text-muted Email
+                        span.req-field.ml-1 title="required" *
+                        = f.email_field :email,
+                                required: true,
+                                class: 'form-control form-control-sm input-sm'
+
+                      .form-group.col-lg-6.col-md-12
+                        label.text-muted Phone Number
+                        span.req-field.ml-1 title="required" *
+                        = f.text_field :phone_number,
+                                required: true,
+                                class: 'form-control form-control-sm input-sm'
+
+                      .form-group.col-lg-6.col-md-12
+                        label.text-muted Gender
+                        span.req-field.ml-1 title="required" *
+                        = f.select :gender,
+                                User.genders.keys.to_a,
+                                { prompt: 'Select one' },
+                                required: true,
+                                class: 'form-control form-control-sm input-sm'
+
+                      .form-group.col-lg-6.col-md-12
+                        label.text-muted Designation
+                        = f.text_field :designation,
+                                class: 'form-control form-control-sm input-sm'
+
+                    - unless current_user.signed_with_microsoft?
+                      h2.text-brand.mb-4.mt-4.mdi.mdi-security = " Security"
+                      .row.mb-2
+                        .form-group.col-lg-6.col-md-12
+                          label.text-muted New Password
+                          = f.password_field :password,
+                                  class: 'form-control form-control-sm input-sm'
+                          span.text-primary.small.mdi.mdi-information
+                          span.text-primary.small.ml-1 Leave empty if you do not want to change!
+
+                        .form-group.col-lg-6.col-md-12
+                          label.text-muted Retype Password
+                          = f.password_field :password_confirmation,
+                                  class: 'form-control input-sm form-control-sm'
+
+                        .form-group.col-lg-12
+                          label.text-muted  Current Password
+                          span.req-field.ml-1 title="required" *
+                          = f.password_field :current_password,
+                                  required: true,
+                                  class: 'form-control input-sm form-control-sm'
+
+                          span.text-primary.small.mdi.mdi-information
+                          span.text-primary.small.ml-2 You have to enter current password to save changes
+
+                    .d-flex.justify-content-end.mt-3
+                      = button_tag type: 'submit',
+                              class: 'button btn btn-sm mr-2 btn-success btn-pill'
+                        i.mdi.mdi-content-save-edit-outline.mt-0.mr-1 role="status"
+                        span.spinner-border.spinner-border-sm.mr-1.d-none aria-hidden="true" role="status"
+                        span Update
+
+                      = link_to root_path,
+                              class: 'button btn btn-sm btn-danger btn-pill'
+                        i.mdi.mdi-close-circle-outline.mt-0.mr-1 role="status"
+                        span.spinner-border.spinner-border-sm.mr-1.d-none aria-hidden="true" role="status"
+                        span Discard

@@ -1,0 +1,24 @@
+aside.left-sidebar.bg-sidebar.bg-brand
+  #sidebar.sidebar.bg-brand
+    .app-brand.py-1
+      = image_pack_tag 'OC.png', class: 'sidebar-logo brand-name text-truncate'
+    .sidebar-scrollbar.bg-brand
+      ul#sidebar-menu.nav.sidebar-inner
+        li
+          a.sidenav-item-link href="#{root_path}"
+            i.mdi.mdi-home
+            span.nav-text Home
+
+        - if is_admin?(current_user)
+          li.has-sub
+            a.sidenav-item-link aria-controls="setup" aria-expanded="false" data-target="#setup" data-toggle="collapse" href="javascript:void(0)"
+              i.mdi.mdi-settings
+              span.nav-text Setup
+              b.caret
+            ul#setup.collapse data-parent="#sidebar-menu"
+              .sub-menu.bg-brand
+                - if is_admin?(current_user)
+                  li
+                    a.sidenav-item-link href="#{users_path}"
+                      span.nav-text User Management
+

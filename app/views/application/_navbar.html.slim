@@ -1,0 +1,36 @@
+header#header class="main-header #{'pl-0' unless current_user.active?}"
+  nav.navbar.navbar-static-top.navbar-expand-lg.py-1
+    - if current_user.active?
+      /! Sidebar toggle button
+      button#sidebar-toggler.sidebar-toggle
+        span.sr-only Toggle navigation
+      .d-inline-block.d-md-none
+        span.h4.m-0.text-primary Online Collaboration
+    .navbar-right.ml-auto
+      ul.nav.navbar-nav.pr-0
+        /! User Account
+        li.dropdown.user-menu
+          button.dropdown-toggle.nav-link.pl-2 data-toggle="dropdown" href="#"
+            = image_tag current_user.displayed_image, class: 'user-image'
+            span.d-none.d-lg-inline-block.text-brand = current_user.first_name
+          ul.dropdown-menu.dropdown-menu-right
+            /! User image
+            li.dropdown-header.pt-2.pl-2.pr-2.pb-1
+              = image_tag current_user.displayed_image, class: 'img-circle'
+              .d-inline-block
+                span.text-brand title='#{current_user.full_name}' data-original-title='#{current_user.full_name}' data-toggle='tooltip' data-placement='left'
+                  = current_user.full_name
+                small title='#{current_user.email}' data-original-title='#{current_user&.email}' data-toggle='tooltip' data-placement='left'
+                  = ellipsisize current_user.email, 18
+                small title='#{current_user&.role}' data-original-title='#{current_user&.role}' data-toggle='tooltip' data-placement='left'
+                  = ellipsisize current_user&.designation, 18
+            li
+              a href="#{edit_user_registration_path}"
+                i.mdi.mdi-account.text-brand
+                span My profile
+
+            li.dropdown-footer
+              = link_to destroy_user_session_path, method: :delete
+                i.mdi.mdi-logout.text-brand
+                span Log out
+

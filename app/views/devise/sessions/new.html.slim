@@ -1,0 +1,56 @@
+#log-in-form
+  = simple_form_for(resource, as: resource_name, url: session_path(resource_name)) do |f|
+    .container.d-flex.flex-column.justify-content-between.vh-100
+      .row.justify-content-center.mt-5
+        .col-xl-5.col-lg-6.col-md-10
+          .card
+            .bg-brand
+              .card-header.bg-brand.mx-auto.justify-content-center.d-flex
+            .card-body.pb-5.pt-3.px-5
+              h2.text-brand.mb-2.text-center Log In
+              - if flash.any?
+                ul.mb-4.py-2.alert-danger
+                  - flash.each do |key, value|
+                    li.alert-danger.py-1.px-3 = value
+              .row
+                .form-group.col-md-12.mb-4
+                  label.text-muted Email
+                  span.req-field.ml-1 title="required" *
+                  = f.email_field :email,
+                          pattern: '[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,4}$',
+                          required: true,
+                          placeholder: 'Email',
+                          class: 'form-control input-sm form-control-sm'
+
+                .form-group.col-md-12.mb-4
+                  .d-flex.justify-content-between
+                    div
+                      label.text-muted Password
+                      span.req-field.ml-1 title="required" *
+                    span.align-self-end.mb-2.small
+                      a.text-blue href="#{new_password_path(resource_name)}" Forgot your password?
+                  = f.password_field :password,
+                          required: true,
+                          class: 'form-control input-sm form-control-sm'
+                .form-group.col-md-12.mb-2
+                  .d-flex.justify-content-between
+                    .d-inline-block.mr-3
+                      label.control.outlined.control-checkbox.checkbox-success
+                        span.text-muted.text-secondary Remember me
+                        = f.check_box :remember_me,
+                                label: false,
+                                type: 'checkbox',
+                                class: 'control control-checkbox',
+                                as: :boolean if devise_mapping.rememberable?
+                        .control-indicator
+                .col-md-12
+                  button.btn.btn-success.btn-block.text-white.my-2 type="submit"  Log In
+                  / = link_to user_azure_activedirectory_v2_omniauth_authorize_path,
+                  /         method: :post,
+                  /         class: 'btn btn-info btn-block'
+                  /   i.mdi.mdi-windows.mr-2.h4 role="status"
+                  /   span.spinner-border.spinner-border-sm.mr-2.d-none aria-hidden="true" role="status"
+                  /   span Login with Microsoft
+                  = link_to 'Sign up',
+                          new_registration_path(resource_name),
+                          class: 'btn btn-block btn-brand text-white'

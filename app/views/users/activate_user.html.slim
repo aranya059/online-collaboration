@@ -1,0 +1,23 @@
+.row
+  .col-12
+    .card.card-default
+      .card-header.card-header-border-bottom.d-flex.justify-content-between
+        h2 = 'Edit User'
+      .card-body
+        = form_for @user, url: update_activate_user_user_path(@user), method: :post do |f|
+          fieldset.form-group
+            label.control.outlined.control-checkbox.checkbox-success
+              | #{'Activate User'}
+              = f.check_box :active
+              .control-indicator
+
+          .form-footer.mt-4.pt-2.border-top
+            = button_tag type: 'submit', class: 'button btn btn-sm btn-primary'
+              i class = " mdi #{ @user.persisted? ? 'mdi-arrow-up-bold-circle' : 'mdi-content-save'} mt-0 mr-2" role="status"
+              span.spinner-border.spinner-border-sm.mr-2.d-none aria-hidden="true" role="status"
+              span = 'Update'
+            = link_to users_path, class: 'button btn btn-sm btn-secondary ml-2'
+              i.mdi.mdi-close-circle.mr-2 role="status"
+              span.spinner-border.spinner-border-sm.mr-2.d-none aria-hidden="true" role="status"
+              span = 'Discard'
+
