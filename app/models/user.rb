@@ -5,6 +5,7 @@ class User < ApplicationRecord
 
   has_one_attached :image
   has_one_attached :signature
+  has_many :created_questions, class_name: 'Question', foreign_key: :creator_id, dependent: :destroy
 
   validates :email,
             presence: true,

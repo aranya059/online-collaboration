@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2022_03_04_111103) do
+ActiveRecord::Schema.define(version: 2022_03_23_185022) do
 
   create_table "action_text_rich_texts", charset: "utf8mb4", force: :cascade do |t|
     t.string "name", null: false
@@ -50,6 +50,15 @@ ActiveRecord::Schema.define(version: 2022_03_04_111103) do
     t.index ["blob_id", "variation_digest"], name: "index_active_storage_variant_records_uniqueness", unique: true
   end
 
+  create_table "questions", charset: "utf8mb4", force: :cascade do |t|
+    t.string "question_title", default: "", null: false
+    t.string "code", default: "", null: false
+    t.bigint "creator_id"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["creator_id"], name: "index_questions_on_creator_id"
+  end
+
   create_table "sessions", charset: "utf8mb4", force: :cascade do |t|
     t.string "session_id", null: false
     t.text "data"
@@ -66,7 +75,7 @@ ActiveRecord::Schema.define(version: 2022_03_04_111103) do
     t.string "last_name", default: "", null: false
     t.string "phone_number", default: "", null: false
     t.boolean "active", default: false
-    t.string "role", default: ""
+    t.boolean "is_admin", default: false
     t.string "designation", default: "", null: false
     t.integer "gender", null: false
     t.string "reset_password_token"
@@ -85,4 +94,5 @@ ActiveRecord::Schema.define(version: 2022_03_04_111103) do
 
   add_foreign_key "active_storage_attachments", "active_storage_blobs", column: "blob_id"
   add_foreign_key "active_storage_variant_records", "active_storage_blobs", column: "blob_id"
+  add_foreign_key "questions", "users", column: "creator_id"
 end

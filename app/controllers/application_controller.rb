@@ -11,8 +11,7 @@ class ApplicationController < ActionController::Base
   end
 
   def is_admin? (user)
-    user_role = User.find(user.id).role
-    if user_role.eql? "ADMIN"
+    if user.is_admin?
       true
     else
       false

@@ -1,0 +1,28 @@
+- if @question.errors.any?
+  - add_breadcrumb 'Questions', questions_path
+  - @question.persisted? ? add_breadcrumb('Edit question') : add_breadcrumb('New Question')
+  ul.mb-4.py-2.alert-danger
+    - @question.errors.full_messages.each do |message|
+      li.alert-danger.py-1.px-3 = message
+
+.form-group.col-12.mb-4
+  label.text-muted.mb-2.h1 Ask Question
+  span.req-field.ml-1 title="required" *
+  = f.text_field :question_title,
+          required: true,
+          placeholder: 'Type your question here',
+          class: 'form-control form-control-sm input-sm'
+fieldset.form-group
+  label Additional Description
+  = f.rich_text_area :additional_description
+.form-footer.mt-4.pt-2.border-top.d-flex.justify-content-center
+  = button_tag type: 'submit', class: 'button btn btn-sm btn-success'
+    i class = " mdi #{ @question.persisted? ? 'mdi-arrow-up-bold-circle' : 'mdi-content-save'} mt-0 mr-2" role="status"
+    span.spinner-border.spinner-border-sm.mr-2.d-none aria-hidden="true" role="status"
+    span = @question.persisted? ? 'Update' : 'Save'
+
+  = link_to questions_path,
+          class: 'button btn btn-sm btn-secondary ml-2'
+    i.mdi.mdi-close-circle.mr-2 role="status"
+    span.spinner-border.spinner-border-sm.mr-2.d-none aria-hidden="true" role="status"
+    span Discard

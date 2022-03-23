@@ -10,7 +10,7 @@ class DeviseCreateUsers < ActiveRecord::Migration[6.1]
       t.string :last_name, null: false, default: ""
       t.string :phone_number, null: false, default: ""
       t.boolean :active, default: false
-      t.string :role, default: ""
+      t.boolean :is_admin, default: false
       t.string :designation, null: false, default: ""
       t.integer :gender, null: false
 

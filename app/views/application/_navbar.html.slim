@@ -22,7 +22,7 @@ header#header class="main-header #{'pl-0' unless current_user.active?}"
                   = current_user.full_name
                 small title='#{current_user.email}' data-original-title='#{current_user&.email}' data-toggle='tooltip' data-placement='left'
                   = ellipsisize current_user.email, 18
-                small title='#{current_user&.role}' data-original-title='#{current_user&.role}' data-toggle='tooltip' data-placement='left'
+                small title='#{current_user&.is_admin}' data-original-title='#{current_user&.is_admin}' data-toggle='tooltip' data-placement='left'
                   = ellipsisize current_user&.designation, 18
             li
               a href="#{edit_user_registration_path}"

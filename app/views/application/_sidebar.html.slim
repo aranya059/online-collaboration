@@ -8,6 +8,19 @@ aside.left-sidebar.bg-sidebar.bg-brand
           a.sidenav-item-link href="#{root_path}"
             i.mdi.mdi-home
             span.nav-text Home
+        li.has-sub
+          a.sidenav-item-link aria-controls="collaboration" aria-expanded="false" data-target="#collaboration" data-toggle="collapse" href="javascript:void(0)"
+            i.mdi.mdi-finance
+            span.nav-text Collaboration
+            b.caret
+          ul#collaboration.collapse data-parent="#sidebar-menu"
+            .sub-menu
+              li
+                a.sidenav-item-link href="#{questions_path}"
+                  span.nav-text Questions
+              / li
+              /   a.sidenav-item-link href="#{invoices_path}"
+              /     span.nav-text = t('.invoices')
 
         - if is_admin?(current_user)
           li.has-sub
