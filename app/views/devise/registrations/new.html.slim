@@ -49,6 +49,14 @@
                           class: 'form-control input-sm form-control-sm'
 
                 .form-group.col-12
+                  label.text-muted Current Company
+                  span.req-field.ml-1 title="required" *
+                  = f.collection_select :company_id,
+                                  Company.all,
+                                  :id, :name, { prompt: true }, required: true,
+                                  class: 'form-control form-control-sm searchable-select'
+
+                .form-group.col-12
                   label.text-muted Gender
                   span.req-field.ml-1 title="required" *
                   = f.select :gender,
@@ -87,24 +95,6 @@
 
                   = f.file_field :image,
                           id: 'image-input',
-                          accept: ".jpeg, .jpg, .png",
-                          class: 'd-none'
-
-                .form-group.col-12.mb-4
-                  = image_pack_tag 'signature-icon.jpg',
-                          alt: 'signature sample image',
-                          id: 'signature-preview',
-                          class: 'w-75 d-flex mx-auto border mb-4'
-
-                  = button_tag type: 'button',
-                          class: 'button btn btn-block btn-light',
-                          id: 'sign-upload'
-                    i.mdi.mdi-pen.mt-0.mr-1 role="status"
-                    span.spinner-border.spinner-border-sm.mr-1.d-none aria-hidden="true" role="status"
-                    span Select Signature
-
-                  = f.file_field :signature,
-                          id: 'sign-input',
                           accept: ".jpeg, .jpg, .png",
                           class: 'd-none'
 

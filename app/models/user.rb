@@ -3,6 +3,7 @@ class User < ApplicationRecord
          :recoverable, :rememberable, :validatable,
          :trackable, :omniauthable, omniauth_providers: %i[azure_activedirectory_v2]
 
+  belongs_to :company
   has_one_attached :image
   has_one_attached :signature
   has_many :created_questions, class_name: 'Question', foreign_key: :creator_id, dependent: :destroy
