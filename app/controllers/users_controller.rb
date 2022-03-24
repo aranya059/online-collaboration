@@ -13,7 +13,7 @@ class UsersController < ApplicationController
 
   def update_activate_user
     @user.active = params[:user][:active]
-
+    @user.role = params[:user][:role]
     begin
       if @user.save
         if @user.active

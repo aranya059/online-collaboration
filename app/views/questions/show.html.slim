@@ -20,20 +20,21 @@
           label Additional Description
         p.card-text
           == @question.additional_description
-        .mt-4.pt-2.border-top.d-flex.justify-content-center
-          = link_to edit_question_path(@question),
-                  class: 'button btn btn-sm btn-primary ml-2'
-            i.mdi.mdi-account-edit.mt-0.mr-2 role="status"
-            span.spinner-border.spinner-border-sm.mr-2.d-none aria-hidden="true" role="status"
-            span Edit
-          = link_to question_path(@question),
-                  method: :delete, data: {confirm: 'Are you sure you want to delete?'},
-                  class: 'button btn btn-sm btn-danger ml-2'
-            i.mdi.mdi-delete.mr-2 role="status"
-            span.spinner-border.spinner-border-sm.mr-2.d-none aria-hidden="true" role="status"
-            span Delete
-          = link_to questions_path,
-                  class: 'button btn btn-sm btn-secondary ml-2'
-            i.mdi.mdi-close-circle.mr-2 role="status"
-            span.spinner-border.spinner-border-sm.mr-2.d-none aria-hidden="true" role="status"
-            span Discard
+        - if current_user.is_admin.eql?(true) || current_user.id.eql?(@question.creator_id)
+          .mt-4.pt-2.border-top.d-flex.justify-content-center
+            = link_to edit_question_path(@question),
+                    class: 'button btn btn-sm btn-primary ml-2'
+              i.mdi.mdi-account-edit.mt-0.mr-2 role="status"
+              span.spinner-border.spinner-border-sm.mr-2.d-none aria-hidden="true" role="status"
+              span Edit
+            = link_to question_path(@question),
+                    method: :delete, data: {confirm: 'Are you sure you want to delete?'},
+                    class: 'button btn btn-sm btn-danger ml-2'
+              i.mdi.mdi-delete.mr-2 role="status"
+              span.spinner-border.spinner-border-sm.mr-2.d-none aria-hidden="true" role="status"
+              span Delete
+            = link_to questions_path,
+                    class: 'button btn btn-sm btn-secondary ml-2'
+              i.mdi.mdi-close-circle.mr-2 role="status"
+              span.spinner-border.spinner-border-sm.mr-2.d-none aria-hidden="true" role="status"
+              span Discard

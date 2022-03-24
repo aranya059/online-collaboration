@@ -19,16 +19,18 @@ class QuestionDatatable < ApplicationDatatable
         links << link_to("<i class='mdi mdi-eye-outline mr-2 text-brand font-23'></i>".html_safe,
                          question_path(question),
                          title: 'Show')
-        links << link_to("<i class='mdi mdi-square-edit-outline text-brand mr-2 font-23'></i>".html_safe,
-                         edit_question_path(question),
-                         title: 'Edit')
-
-        links << link_to("<i class='mdi mdi-delete mr-2 text-brand font-23'></i>".html_safe,
-                         question_path(question),
-                         title: 'Delete',
-                         method: :delete,
-                         data: {confirm: 'Are you sure you want to delete it?'})
-
+        links << if @current_user.is_admin.eql?(true) || @current_user.id.eql?(question.creator_id)
+                   link_to("<i class='mdi mdi-square-edit-outline text-brand mr-2 font-23'></i>".html_safe,
+                           edit_question_path(question),
+                           title: 'Edit')
+                 end
+        links << if @current_user.is_admin.eql?(true) || @current_user.id.eql?(question.creator_id)
+                   link_to("<i class='mdi mdi-delete mr-2 text-brand font-23'></i>".html_safe,
+                           question_path(question),
+                           title: 'Delete',
+                           method: :delete,
+                           data: {confirm: 'Are you sure you want to delete it?'})
+                 end
         column << links.join('')
       end
     end
