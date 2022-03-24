@@ -1,70 +1,66 @@
 class CompaniesController < ApplicationController
   before_action :set_company, only: %i[ show edit update destroy ]
 
-  # GET /companies or /companies.json
   def index
-    @companies = Company.all
+    respond_to do |format|
+      format.html
+      format.json { render json: CompanyDatatable.new(view_context, current_user) }
+    end
   end
 
-  # GET /companies/1 or /companies/1.json
   def show
   end
 
-  # GET /companies/new
   def new
     @company = Company.new
+    add_breadcrumb 'New Company'
   end
 
-  # GET /companies/1/edit
   def edit
   end
 
-  # POST /companies or /companies.json
   def create
     @company = Company.new(company_params)
-
-    respond_to do |format|
-      if @company.save
-        format.html { redirect_to company_url(@company), notice: "Company was successfully created." }
-        format.json { render :show, status: :created, location: @company }
-      else
-        format.html { render :new, status: :unprocessable_entity }
-        format.json { render json: @company.errors, status: :unprocessable_entity }
-      end
+    if @company.save
+      redirect_to companies_path,
+                  notice: 'Company is created successfully'
+    else
+      render :new
     end
   end
 
-  # PATCH/PUT /companies/1 or /companies/1.json
   def update
-    respond_to do |format|
-      if @company.update(company_params)
-        format.html { redirect_to company_url(@company), notice: "Company was successfully updated." }
-        format.json { render :show, status: :ok, location: @company }
-      else
-        format.html { render :edit, status: :unprocessable_entity }
-        format.json { render json: @company.errors, status: :unprocessable_entity }
-      end
+    if @company.update(company_params)
+      redirect_to companies_path,
+                  notice: 'Company is updated successfully'
+    else
+      render :edit
     end
   end
 
-  # DELETE /companies/1 or /companies/1.json
   def destroy
-    @company.destroy
-
-    respond_to do |format|
-      format.html { redirect_to companies_url, notice: "Company was successfully destroyed." }
-      format.json { head :no_content }
+    begin
+      if @company.destroy
+        redirect_to companies_path,
+                    notice: 'Company is destroyed successfully.'
+      end
+    rescue StandardError => e
+      redirect_to fallback_location: root_path,
+                  flash: { error: 'Operation could not be completed.' }
     end
+  end
+
+  def index_breadcrumb
+    add_breadcrumb 'companies', companies_path
   end
 
   private
-    # Use callbacks to share common setup or constraints between actions.
     def set_company
       @company = Company.find(params[:id])
     end
 
-    # Only allow a list of trusted parameters through.
     def company_params
-      params.require(:company).permit(:code, :name)
+      params.require(:company).permit(:name,
+                                      :additional_description)
     end
 end

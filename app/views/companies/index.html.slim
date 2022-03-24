@@ -1,23 +1,24 @@
-h1 Listing companies
+.col-12
+  .card.card-default
+    .card-header.card-header-border-bottom.row.col-12.d-flex.justify-content-between.px-4.align-content-center
+      p.h2.text-brand Companies
+      = link_to new_company_path,
+              class: 'btn btn-sm btn-brand text-white'
+        i.mdi.mdi-plus.mr-1 role="status"
+        span.spinner-border.spinner-border-sm.mr-2.d-none aria-hidden="true" role="status"
+        span Add New
 
-table
-  thead
-    tr
-      th Code
-      th Name
-      th
-      th
-      th
-
-  tbody
-    - @companies.each do |company|
-      tr
-        td = company.code
-        td = company.name
-        td = link_to 'Show', company
-        td = link_to 'Edit', edit_company_path(company)
-        td = link_to 'Destroy', company, data: { confirm: 'Are you sure?' }, method: :delete
-
-br
-
-= link_to 'New Company', new_company_path
+    .card-body
+      = content_tag :table,
+              role: :datatable,
+              style: 'width: 100%',
+              id: 'responsive-data-table-ajax',
+              class: 'table dt-responsive nowrap',
+              data: { url: companies_path(format: :json) } do
+        thead
+          tr
+            th.text-brand SL
+            th.text-brand Code
+            th.text-brand Name
+            th.nosort.actions.text-brand Actions
+        tbody

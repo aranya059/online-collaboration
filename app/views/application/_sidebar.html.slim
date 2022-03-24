@@ -29,9 +29,12 @@ aside.left-sidebar.bg-sidebar.bg-brand
               span.nav-text Setup
               b.caret
             ul#setup.collapse data-parent="#sidebar-menu"
-              .sub-menu.bg-brand
+              .sub-menu
                 - if is_admin?(current_user)
                   li
                     a.sidenav-item-link href="#{users_path}"
                       span.nav-text User Management
+                  li
+                    a.sidenav-item-link href="#{companies_path}"
+                      span.nav-text Company Management
 

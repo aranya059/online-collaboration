@@ -1,7 +1,8 @@
-h1 Editing company
-
-== render 'form'
-
-=> link_to 'Show', @company
-'|
-=< link_to 'Back', companies_path
+.row
+  .col-12
+    .card.card-default
+      = simple_form_for @company, html: { class: 'form' } do |f|
+        .card-header.card-header-border-bottom.d-flex.justify-content-between
+          h2.text-brand.pl-3 Edit Company
+        .card-body
+          = render partial: 'form', locals: { f: f }
