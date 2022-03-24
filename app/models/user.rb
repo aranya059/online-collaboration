@@ -40,6 +40,16 @@ class User < ApplicationRecord
     Other: OTHER
   }
 
+  EMPLOYEE = 0
+  MODERATOR = 1
+  ADMIN = 2
+
+  enum role: {
+    Employee: EMPLOYEE,
+    Moderator: MODERATOR,
+    Admin: ADMIN
+  }
+
   def displayed_image(version='original')
     if image.attached?
       if version.eql? 'avatar'
