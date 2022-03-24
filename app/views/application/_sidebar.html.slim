@@ -18,11 +18,8 @@ aside.left-sidebar.bg-sidebar.bg-brand
               li
                 a.sidenav-item-link href="#{questions_path}"
                   span.nav-text Questions
-              / li
-              /   a.sidenav-item-link href="#{invoices_path}"
-              /     span.nav-text = t('.invoices')
 
-        - if is_admin?(current_user)
+        - if current_user.is_admin.eql?(true)
           li.has-sub
             a.sidenav-item-link aria-controls="setup" aria-expanded="false" data-target="#setup" data-toggle="collapse" href="javascript:void(0)"
               i.mdi.mdi-settings
@@ -30,7 +27,7 @@ aside.left-sidebar.bg-sidebar.bg-brand
               b.caret
             ul#setup.collapse data-parent="#sidebar-menu"
               .sub-menu
-                - if is_admin?(current_user)
+                - if current_user.is_admin.eql?(true)
                   li
                     a.sidenav-item-link href="#{users_path}"
                       span.nav-text User Management

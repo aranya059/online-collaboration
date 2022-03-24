@@ -1,6 +1,7 @@
 class QuestionsController < ApplicationController
   before_action :set_question, only: %i[ show edit update destroy ]
   before_action :index_breadcrumb, only: %i[index new create edit update show]
+  before_action :check_ownership, only: %i[edit update destroy]
 
   def index
     respond_to do |format|
@@ -65,5 +66,18 @@ class QuestionsController < ApplicationController
   def question_params
     params.require(:question).permit(:question_title,
                                      :additional_description)
+  end
+  def check_ownership
+    begin
+      if current_user.is_admin.eql?(true) || current_user.id.eql?(@question.creator_id)
+        true
+      else
+        redirect_back fallback_location: root_path,
+                      flash: { error: 'You are not eligible to make this change' }
+      end
+    rescue StandardError => e
+      redirect_back fallback_location: root_path,
+                    flash: { error: invalid_id_error_message(e) }
+    end
   end
 end

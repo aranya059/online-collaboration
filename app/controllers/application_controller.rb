@@ -2,21 +2,12 @@ class ApplicationController < ActionController::Base
   protect_from_forgery with: :exception
   before_action :authenticate_user!
   before_action :configure_permitted_parameters, if: :devise_controller?
-  helper_method :is_admin?
 
-  # rescue_from ActiveRecord::RecordNotFound, with: :invalid_entry
 
   def invalid_id_error_message(e)
     "Invalid entry! #{e}"
   end
 
-  def is_admin? (user)
-    if user.is_admin?
-      true
-    else
-      false
-    end
-  end
 
   protected
   def configure_permitted_parameters

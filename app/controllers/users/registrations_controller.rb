@@ -11,10 +11,6 @@ class Users::RegistrationsController < Devise::RegistrationsController
   end
 
   def update_resource(resource, params)
-    if resource.signed_with_microsoft?
-      resource.update_without_password(params)
-    else
-      resource.update_with_password(params)
-    end
+    resource.update_with_password(params)
   end
 end
