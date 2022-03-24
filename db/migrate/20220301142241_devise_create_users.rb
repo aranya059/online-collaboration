@@ -13,7 +13,7 @@ class DeviseCreateUsers < ActiveRecord::Migration[6.1]
       t.boolean :is_admin, default: false
       t.string :designation, null: false, default: ""
       t.integer :gender, null: false
-
+      t.references :company, index: true
       ## Recoverable
       t.string   :reset_password_token
       t.datetime :reset_password_sent_at

@@ -1,0 +1,22 @@
+[
+  {
+    "company_code": "COM-1",
+    "company_name": "Google"
+  },
+  {
+    "company_code": "COM-2",
+    "company_name": "Facebook"
+  },
+  {
+    "company_code": "COM-3",
+    "company_name": "Microsoft"
+  },
+  {
+    "company_code": "COM-4",
+    "company_name": "Amazon"
+  },
+  {
+    "company_code": "COM-5",
+    "company_name": "Netflix"
+  }
+]

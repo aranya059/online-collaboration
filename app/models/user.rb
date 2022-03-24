@@ -3,6 +3,7 @@ class User < ApplicationRecord
          :recoverable, :rememberable, :validatable,
          :trackable, :omniauthable, omniauth_providers: %i[azure_activedirectory_v2]
 
+  belongs_to :company
   has_one_attached :image
   has_one_attached :signature
   has_many :created_questions, class_name: 'Question', foreign_key: :creator_id, dependent: :destroy
@@ -39,14 +40,6 @@ class User < ApplicationRecord
     Other: OTHER
   }
 
-  GENERAL = 0
-  MICROSOFT = 1
-
-  enum authentication_type: {
-    General: 0,
-    Microsoft: 1
-  }
-
   def displayed_image(version='original')
     if image.attached?
       if version.eql? 'avatar'
@@ -59,16 +52,6 @@ class User < ApplicationRecord
     end
   end
 
-
-  def get_signature
-    return signature if signature.attached?
-
-    ActionController::Base.helpers.asset_pack_path('media/images/white_bg.png')
-  end
-
-  def signed_with_microsoft?
-    self.authentication_type.eql?(User.authentication_types.keys.last)
-  end
 
   def full_name
     full_name = ''

@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2022_03_23_185022) do
+ActiveRecord::Schema.define(version: 2022_03_23_203828) do
 
   create_table "action_text_rich_texts", charset: "utf8mb4", force: :cascade do |t|
     t.string "name", null: false
@@ -50,6 +50,13 @@ ActiveRecord::Schema.define(version: 2022_03_23_185022) do
     t.index ["blob_id", "variation_digest"], name: "index_active_storage_variant_records_uniqueness", unique: true
   end
 
+  create_table "companies", charset: "utf8mb4", force: :cascade do |t|
+    t.string "code", default: "", null: false
+    t.string "name", default: "", null: false
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+  end
+
   create_table "questions", charset: "utf8mb4", force: :cascade do |t|
     t.string "question_title", default: "", null: false
     t.string "code", default: "", null: false
@@ -78,6 +85,7 @@ ActiveRecord::Schema.define(version: 2022_03_23_185022) do
     t.boolean "is_admin", default: false
     t.string "designation", default: "", null: false
     t.integer "gender", null: false
+    t.bigint "company_id"
     t.string "reset_password_token"
     t.datetime "reset_password_sent_at"
     t.datetime "remember_created_at"
@@ -88,6 +96,7 @@ ActiveRecord::Schema.define(version: 2022_03_23_185022) do
     t.string "last_sign_in_ip"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
+    t.index ["company_id"], name: "index_users_on_company_id"
     t.index ["email"], name: "index_users_on_email", unique: true
     t.index ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true
   end
