@@ -1,7 +1,13 @@
 Rails.application.routes.draw do
 
   resources :companies
-  resources :questions
+  resources :questions do
+    resources :answers do
+      collection do
+        post :add_answer
+      end
+    end
+  end
   devise_for :users,
              controllers: {
                omniauth_callbacks: 'users/omniauth_callbacks',
@@ -9,21 +15,7 @@ Rails.application.routes.draw do
              }
 
   root 'homes#index'
-  resources :companies do
-    member do
-      delete :delete_company_attachment
-    end
-  end
-
-  resources :project_reports
-  resources :projects do
-    resources :project_reports do
-      collection do
-        get :fetch_representative
-      end
-    end
-  end
-  resources :representatives
+  resources :companies
   resources :users do
     member do
       get :activate_user

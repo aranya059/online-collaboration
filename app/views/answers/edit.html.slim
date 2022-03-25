@@ -1,0 +1,14 @@
+- if @answer.errors.any?
+  - add_breadcrumb 'Question', question_path
+  - @answer.persisted? ? add_breadcrumb('Edit Answer') : add_breadcrumb('New Company')
+  ul.mb-4.py-2.alert-danger
+    - @answer.errors.full_messages.each do |message|
+      li.alert-danger.py-1.px-3 = message
+
+.form-group.col-12.mb-4
+  label.text-muted.mb-2.h1 Edit Answer
+  span.req-field.ml-1 title="required" *
+  = f.text_field :answer_text,
+          required: true,
+          placeholder: 'Write your answer here',
+          class: 'form-control form-control-sm input-sm'

@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2022_03_24_142818) do
+ActiveRecord::Schema.define(version: 2022_03_24_154817) do
 
   create_table "action_text_rich_texts", charset: "utf8mb4", force: :cascade do |t|
     t.string "name", null: false
@@ -48,6 +48,19 @@ ActiveRecord::Schema.define(version: 2022_03_24_142818) do
     t.bigint "blob_id", null: false
     t.string "variation_digest", null: false
     t.index ["blob_id", "variation_digest"], name: "index_active_storage_variant_records_uniqueness", unique: true
+  end
+
+  create_table "answers", charset: "utf8mb4", force: :cascade do |t|
+    t.text "answer_text", null: false
+    t.bigint "creator_id"
+    t.bigint "question_id"
+    t.integer "up_vote", default: 0, null: false
+    t.integer "down_vote", default: 0, null: false
+    t.boolean "accept_status", default: false, null: false
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["creator_id"], name: "index_answers_on_creator_id"
+    t.index ["question_id"], name: "index_answers_on_question_id"
   end
 
   create_table "companies", charset: "utf8mb4", force: :cascade do |t|
@@ -104,5 +117,7 @@ ActiveRecord::Schema.define(version: 2022_03_24_142818) do
 
   add_foreign_key "active_storage_attachments", "active_storage_blobs", column: "blob_id"
   add_foreign_key "active_storage_variant_records", "active_storage_blobs", column: "blob_id"
+  add_foreign_key "answers", "questions"
+  add_foreign_key "answers", "users", column: "creator_id"
   add_foreign_key "questions", "users", column: "creator_id"
 end
