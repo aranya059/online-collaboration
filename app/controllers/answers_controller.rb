@@ -25,10 +25,23 @@ class AnswersController < ApplicationController
       render :edit
     end
   end
+
+  def destroy
+    begin
+      question_id = @answer.question_id
+      if @answer.destroy
+        redirect_to question_path(question_id),
+                    notice: 'Answer is deleted successfully.'
+      end
+    rescue StandardError => e
+      redirect_to fallback_location: root_path,
+                  flash: { error: 'Operation could not be completed.' }
+    end
+  end
   
   private
   def set_answer
-    @answer = answer.find(params[:id])
+    @answer = Answer.find(params[:id])
   end
 
   def answer_params
