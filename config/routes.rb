@@ -8,7 +8,9 @@ Rails.application.routes.draw do
       end
     end
   end
-  resources :answers
+  resources :answers do
+    put :accept_unaccepted_answer
+  end
   devise_for :users,
              controllers: {
                omniauth_callbacks: 'users/omniauth_callbacks',

@@ -38,6 +38,35 @@ class AnswersController < ApplicationController
                   flash: { error: 'Operation could not be completed.' }
     end
   end
+
+  def accept_unaccepted_answer
+    @answer = Answer.find(params[:answer_id])
+    question_id = @answer.question_id
+    @question = Question.find(question_id)
+    if @answer.accept_status.eql?(true)
+      @answer.accept_status = false
+      @answer.save
+    else
+      @question.answers.each do |answer|
+        if answer.accept_status.eql?(true)
+          answer.accept_status = false
+          answer.save
+          break
+        end
+      end
+      @answer.accept_status = true
+      @answer.save
+    end
+    if @answer.accept_status.eql?(true)
+      notice_message = 'Answer is accepted successfully.'
+    else
+      notice_message = 'Answer accepted status is removed successfully.'
+    end
+
+    redirect_to question_path(question_id),
+                notice: notice_message
+
+  end
   
   private
   def set_answer
