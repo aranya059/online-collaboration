@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2022_03_24_142818) do
+ActiveRecord::Schema.define(version: 2022_03_26_195024) do
 
   create_table "action_text_rich_texts", charset: "utf8mb4", force: :cascade do |t|
     t.string "name", null: false
@@ -50,6 +50,19 @@ ActiveRecord::Schema.define(version: 2022_03_24_142818) do
     t.index ["blob_id", "variation_digest"], name: "index_active_storage_variant_records_uniqueness", unique: true
   end
 
+  create_table "answers", charset: "utf8mb4", force: :cascade do |t|
+    t.text "answer_text", null: false
+    t.bigint "creator_id"
+    t.bigint "question_id"
+    t.integer "up_vote", default: 0, null: false
+    t.integer "down_vote", default: 0, null: false
+    t.boolean "accept_status", default: false, null: false
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["creator_id"], name: "index_answers_on_creator_id"
+    t.index ["question_id"], name: "index_answers_on_question_id"
+  end
+
   create_table "companies", charset: "utf8mb4", force: :cascade do |t|
     t.string "code", default: "", null: false
     t.string "name", default: "", null: false
@@ -73,6 +86,17 @@ ActiveRecord::Schema.define(version: 2022_03_24_142818) do
     t.datetime "updated_at", precision: 6, null: false
     t.index ["session_id"], name: "index_sessions_on_session_id", unique: true
     t.index ["updated_at"], name: "index_sessions_on_updated_at"
+  end
+
+  create_table "user_comment_votes", charset: "utf8mb4", force: :cascade do |t|
+    t.bigint "creator_id"
+    t.boolean "up_vote", default: false
+    t.boolean "down_vote", default: false
+    t.bigint "answer_id"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["answer_id"], name: "index_user_comment_votes_on_answer_id"
+    t.index ["creator_id"], name: "index_user_comment_votes_on_creator_id"
   end
 
   create_table "users", charset: "utf8mb4", force: :cascade do |t|
@@ -104,5 +128,9 @@ ActiveRecord::Schema.define(version: 2022_03_24_142818) do
 
   add_foreign_key "active_storage_attachments", "active_storage_blobs", column: "blob_id"
   add_foreign_key "active_storage_variant_records", "active_storage_blobs", column: "blob_id"
+  add_foreign_key "answers", "questions"
+  add_foreign_key "answers", "users", column: "creator_id"
   add_foreign_key "questions", "users", column: "creator_id"
+  add_foreign_key "user_comment_votes", "answers"
+  add_foreign_key "user_comment_votes", "users", column: "creator_id"
 end

@@ -11,6 +11,10 @@ class UsersController < ApplicationController
   def activate_user
   end
 
+  def show
+    @user = User.find(params[:id])
+  end
+
   def update_activate_user
     @user.active = params[:user][:active]
     @user.role = params[:user][:role]

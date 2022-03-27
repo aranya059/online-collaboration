@@ -1,0 +1,59 @@
+.row
+  .col-12
+    h4.text-brand.pl-3 Existing Answers
+    .card-body
+      table#responsive-data-table.table.dt-responsive style="width: 100%;"
+        thead
+          tr
+            th SL
+            th Answered By
+            th Answer
+            th.nosort.actions Actions
+        tbody
+          - @answers.each_with_index do |answer, i|
+            tr
+              td = i + 1
+              td.text-primary = link_to answer.creator.full_name, user_path(answer.creator)
+              -if answer.accept_status
+                td.text-success = answer.answer_text
+              -elsif current_user.id.eql?(answer.creator_id)
+                td.text-dark = answer.answer_text
+              -else
+                td = answer.answer_text
+              td.actions
+                font color="green" size= "3px"
+                  = answer.up_vote
+                - if !current_user.id.eql?(answer.creator_id)
+                  = link_to user_comment_vote_answer_up_vote_path(answer, creator_id: current_user, user_comment_vote: {creator_id: current_user.id}),
+                        method: :post,
+                        title: 'Up Vote'
+                    i.mdi.mdi-chevron-up.mr-4
+                - else
+                  i.mdi.mdi-chevron-up.mr-4
+                font color="red" size= "3px"
+                  = answer.down_vote
+                - if !current_user.id.eql?(answer.creator_id)
+                  = link_to user_comment_vote_answer_down_vote_path(answer, creator_id: current_user, user_comment_vote: {creator_id: current_user.id}),
+                          method: :post,
+                          title: 'Down Vote'
+                    i.mdi.mdi-chevron-down.mr-4
+                -else
+                  i.mdi.mdi-chevron-down.mr-4
+                - if current_user.id.eql?(@question.creator_id)
+                  - if answer.accept_status
+                    = link_to answer_accept_unaccepted_answer_path(answer),
+                            method: :put,
+                            title: 'Accepted Answer'
+                      i.mdi.mdi-checkbox-marked.mr-4 style="color:green"
+                  - else
+                    = link_to answer_accept_unaccepted_answer_path(answer),
+                          method: :put,
+                          title: 'Accept Answer'
+                      i.mdi.mdi-check.mr-4
+                - if answer.accept_status and !current_user.id.eql?(@question.creator_id)
+                  i.mdi.mdi-check-circle.mr-4 style="color:green"
+                - if current_user.is_admin.eql?(true) || current_user.id.eql?(@question.creator_id)
+                  = link_to answer_path(answer),
+                        method: :delete, data: { confirm: 'Are you sure, you want to delete this answer?' },
+                        title: 'Delete'
+                    i.mdi.mdi-delete.mr-4

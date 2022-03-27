@@ -11,6 +11,9 @@ class QuestionsController < ApplicationController
   end
 
   def show
+    @answer = Answer.new
+    @answers = @question.answers.all
+    @user_comment_vote = UserCommentVote.new
     add_breadcrumb 'Question Details'
   end
 
@@ -55,7 +58,7 @@ class QuestionsController < ApplicationController
   end
 
   def index_breadcrumb
-    add_breadcrumb 'Questions', companies_path
+    add_breadcrumb 'Questions', questions_path
   end
   private
 

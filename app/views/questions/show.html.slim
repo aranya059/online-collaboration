@@ -38,3 +38,28 @@
               i.mdi.mdi-close-circle.mr-2 role="status"
               span.spinner-border.spinner-border-sm.mr-2.d-none aria-hidden="true" role="status"
               span Discard
+
+        = form_for @answer, url: add_answer_question_answers_path(@question), method: :post, html: { class: 'form col-12' } do |f|
+          = hidden_field_tag :question_id , @question.id
+          = f.hidden_field :creator_id , value: current_user.id
+          .row
+            .col-12
+              .card-body
+                .form-group.col-12.mb-4
+                  label.text-muted.mb-2.h1 Add Answer
+                  = f.text_area :answer_text,
+                          required: true,
+                          placeholder: 'Type your answer here',
+                          class: 'form-control form-control-sm input-sm'
+                = button_tag type: 'submit', name: nil, class: 'button btn btn-sm btn-success'
+                  i.mdi.mdi-account-check.mt-0.mr-2 role="status"
+                  span.spinner-border.spinner-border-sm.mr-2.d-none aria-hidden="true" role="status"
+                  span Post
+                = link_to questions_path,
+                        class: 'button btn btn-sm btn-secondary ml-2'
+                  i.mdi.mdi-close-circle.mr-2 role="status"
+                  span.spinner-border.spinner-border-sm.mr-2.d-none aria-hidden="true" role="status"
+                  span Discard
+
+          = render partial: 'all_answer'
+
