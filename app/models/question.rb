@@ -7,4 +7,12 @@ class Question < ApplicationRecord
   def set_code
     update(code: "QUE-#{id}")
   end
+
+  COLLEAGUES = 0
+  EVERYONE = 1
+
+  enum visibility: {
+    Colleagues: COLLEAGUES,
+    Everyone: EVERYONE
+  }
 end
