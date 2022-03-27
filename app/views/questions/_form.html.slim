@@ -5,6 +5,15 @@
     - @question.errors.full_messages.each do |message|
       li.alert-danger.py-1.px-3 = message
 
+.form-group.col-lg-12.col-md-12
+  label Visibility
+  span.req-field.ml-1 title="required" *
+  = f.select :visibility_status,
+          Question.visibilities.keys.to_a,
+          { prompt: 'Select visibility' },
+          required: true,
+          class: 'form-control form-control-sm input-sm'
+
 .form-group.col-12.mb-4
   label.text-muted.mb-2.h1 Ask Question
   span.req-field.ml-1 title="required" *

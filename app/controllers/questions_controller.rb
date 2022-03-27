@@ -67,7 +67,8 @@ class QuestionsController < ApplicationController
   end
 
   def question_params
-    params.require(:question).permit(:question_title,
+    params.require(:question).permit(:visibility_status,
+                                     :question_title,
                                      :additional_description)
   end
   def check_ownership

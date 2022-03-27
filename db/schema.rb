@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2022_03_26_195024) do
+ActiveRecord::Schema.define(version: 2022_03_27_193243) do
 
   create_table "action_text_rich_texts", charset: "utf8mb4", force: :cascade do |t|
     t.string "name", null: false
@@ -76,6 +76,7 @@ ActiveRecord::Schema.define(version: 2022_03_26_195024) do
     t.bigint "creator_id"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
+    t.integer "visibility_status", default: 1
     t.index ["creator_id"], name: "index_questions_on_creator_id"
   end
 
