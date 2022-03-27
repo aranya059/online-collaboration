@@ -38,7 +38,6 @@
               i.mdi.mdi-close-circle.mr-2 role="status"
               span.spinner-border.spinner-border-sm.mr-2.d-none aria-hidden="true" role="status"
               span Discard
-
         = form_for @answer, url: add_answer_question_answers_path(@question), method: :post, html: { class: 'form col-12' } do |f|
           = hidden_field_tag :question_id , @question.id
           = f.hidden_field :creator_id , value: current_user.id
@@ -46,20 +45,26 @@
             .col-12
               .card-body
                 .form-group.col-12.mb-4
+                  - readonly_value =  true
+                  - if !@question.creator.eql?(current_user) or (@question.creator.eql?(current_user) and @question.created_at < 1.day.ago)
+                    - readonly_value = false
                   label.text-muted.mb-2.h1 Add Answer
                   = f.text_area :answer_text,
                           required: true,
+                          readonly: readonly_value,
                           placeholder: 'Type your answer here',
                           class: 'form-control form-control-sm input-sm'
-                = button_tag type: 'submit', name: nil, class: 'button btn btn-sm btn-success'
-                  i.mdi.mdi-account-check.mt-0.mr-2 role="status"
-                  span.spinner-border.spinner-border-sm.mr-2.d-none aria-hidden="true" role="status"
-                  span Post
+                - if !@question.creator.eql?(current_user) or (@question.creator.eql?(current_user) and @question.created_at < 1.day.ago)
+                  = button_tag type: 'submit', name: nil, class: 'button btn btn-sm btn-success'
+                    i.mdi.mdi-account-check.mt-0.mr-2 role="status"
+                    span.spinner-border.spinner-border-sm.mr-2.d-none aria-hidden="true" role="status"
+                    span Post
                 = link_to questions_path,
                         class: 'button btn btn-sm btn-secondary ml-2'
                   i.mdi.mdi-close-circle.mr-2 role="status"
                   span.spinner-border.spinner-border-sm.mr-2.d-none aria-hidden="true" role="status"
                   span Discard
+                - if !(!@question.creator.eql?(current_user) or (@question.creator.eql?(current_user) and @question.created_at < 1.day.ago))
+                  .text-info You can add your answer after 24 hours of your question creation
 
-          = render partial: 'all_answer'
-
+        = render partial: 'all_answer'
