@@ -7,6 +7,7 @@ class User < ApplicationRecord
   has_one_attached :image
   has_many :created_questions, class_name: 'Question', foreign_key: :creator_id, dependent: :destroy
   has_many :created_answers, class_name: 'Answer', foreign_key: :creator_id, dependent: :destroy
+  has_many :created_user_comment_vote, class_name: 'UserCommentVote', foreign_key: :creator_id, dependent: :destroy
 
   validates :email,
             presence: true,
@@ -67,6 +68,4 @@ class User < ApplicationRecord
     full_name += email.split('@')[0] unless full_name.present?
     full_name
   end
-
-
 end

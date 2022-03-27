@@ -13,6 +13,7 @@ class QuestionsController < ApplicationController
   def show
     @answer = Answer.new
     @answers = @question.answers.all
+    @user_comment_vote = UserCommentVote.new
     add_breadcrumb 'Question Details'
   end
 

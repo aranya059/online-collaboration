@@ -62,10 +62,8 @@ class AnswersController < ApplicationController
     else
       notice_message = 'Answer accepted status is removed successfully.'
     end
-
     redirect_to question_path(question_id),
                 notice: notice_message
-
   end
   
   private
