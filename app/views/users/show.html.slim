@@ -22,3 +22,18 @@
             tr
               td Role
               td = @user.role
+            tr
+              td Number of total accepted answer
+              td = @user.total_accepted_answer
+            tr
+              td Number of total accepted answer of own question
+              td = @user.own_question_accepted_answer
+            tr
+              td Total up vote
+              td = @user.total_up_vote
+            tr
+              td Total down vote
+              td = @user.total_down_vote
+            tr
+              td Total Score(Excluding points related to own question)
+              td = @user.total_score

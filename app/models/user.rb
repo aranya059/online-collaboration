@@ -59,6 +59,27 @@ class User < ApplicationRecord
     end
   end
 
+  def total_accepted_answer
+    Answer.accept_answers.where(creator_id: id).count
+  end
+
+  def own_question_accepted_answer
+    @answers = Answer.accept_answers.where(creator_id: id)
+    questions_ids = @answers.pluck(:question_id)
+    Question.where(id: questions_ids, creator_id: id).count
+  end
+
+  def total_up_vote
+    UserCommentVote.up_votes.where(answer_creator_id: id).count
+  end
+
+  def total_down_vote
+    UserCommentVote.down_votes.where(answer_creator_id: id).count
+  end
+
+  def total_score
+    (total_accepted_answer - own_question_accepted_answer)*10 + total_up_vote - total_down_vote
+  end
 
   def full_name
     full_name = ''

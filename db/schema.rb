@@ -92,6 +92,7 @@ ActiveRecord::Schema.define(version: 2022_03_26_195024) do
     t.bigint "creator_id"
     t.boolean "up_vote", default: false
     t.boolean "down_vote", default: false
+    t.integer "answer_creator_id"
     t.bigint "answer_id"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false

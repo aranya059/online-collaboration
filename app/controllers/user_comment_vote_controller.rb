@@ -5,8 +5,9 @@ class UserCommentVoteController < ApplicationController
     @answer = Answer.find(params[:user_comment_vote_id])
     question_id = @answer.question_id
     @question = Question.find(question_id)
-    if UserCommentVote.find_by_answer_id(@answer.id) and UserCommentVote.find_by_creator_id(current_user.id)
-      @user_comment_vote= UserCommentVote.find_by(answer_id: @answer.id, creator_id: current_user.id)
+    if UserCommentVote.find_by_answer_id(@answer.id) and UserCommentVote.find_by_answer_creator_id(@answer.creator_id)
+      @user_comment_vote= UserCommentVote.find_by(answer_id: @answer.id, answer_creator_id: @answer.creator_id)
+      @user_comment_vote.answer_creator_id = @answer.creator_id
       if @user_comment_vote.up_vote.eql?(true)
         @user_comment_vote.down_vote = false
         @user_comment_vote.save
@@ -26,6 +27,7 @@ class UserCommentVoteController < ApplicationController
       @user_comment_vote = current_user.created_user_comment_vote.new(user_comment_vote_params)
       @user_comment_vote.answer_id = params[:user_comment_vote_id]
       @user_comment_vote.creator_id = params[:creator_id]
+      @user_comment_vote.answer_creator_id = @answer.creator_id
       @user_comment_vote.up_vote = true
       @user_comment_vote.down_vote = false
       @user_comment_vote.save
@@ -40,8 +42,9 @@ class UserCommentVoteController < ApplicationController
     @answer = Answer.find(params[:user_comment_vote_id])
     question_id = @answer.question_id
     @question = Question.find(question_id)
-    if UserCommentVote.find_by_answer_id(@answer.id) and UserCommentVote.find_by_creator_id(current_user.id)
-      @user_comment_vote= UserCommentVote.find_by(answer_id: @answer.id, creator_id: current_user.id)
+    if UserCommentVote.find_by_answer_id(@answer.id) and UserCommentVote.find_by_answer_creator_id(@answer.creator_id)
+      @user_comment_vote= UserCommentVote.find_by(answer_id: @answer.id, answer_creator_id: @answer.creator_id)
+      @user_comment_vote.answer_creator_id = @answer.creator_id
       if @user_comment_vote.down_vote.eql?(true)
         @user_comment_vote.up_vote = false
         @user_comment_vote.save
@@ -61,6 +64,7 @@ class UserCommentVoteController < ApplicationController
       @user_comment_vote = current_user.created_user_comment_vote.new(user_comment_vote_params)
       @user_comment_vote.answer_id = params[:user_comment_vote_id]
       @user_comment_vote.creator_id = params[:creator_id]
+      @user_comment_vote.answer_creator_id = @answer.creator_id
       @user_comment_vote.down_vote = true
       @user_comment_vote.up_vote = false
       @user_comment_vote.save
