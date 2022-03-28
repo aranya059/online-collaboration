@@ -8,6 +8,10 @@ aside.left-sidebar.bg-sidebar.bg-brand
           a.sidenav-item-link href="#{root_path}"
             i.mdi.mdi-home
             span.nav-text Home
+        li
+          a.sidenav-item-link href="#{user_path(id: current_user.id)}"
+            i.mdi.mdi-chart-histogram
+            span My statistical details
         li.has-sub
           a.sidenav-item-link aria-controls="collaboration" aria-expanded="false" data-target="#collaboration" data-toggle="collapse" href="javascript:void(0)"
             i.mdi.mdi-comment-text

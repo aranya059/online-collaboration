@@ -60,6 +60,14 @@ class User < ApplicationRecord
     end
   end
 
+  def total_asked_question
+    Question.where(creator_id: id).count
+  end
+
+  def total_given_answer
+    Answer.where(creator_id: id).count
+  end
+
   def total_accepted_answer
     Answer.accept_answers.where(creator_id: id).count
   end
