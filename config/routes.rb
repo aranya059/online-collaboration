@@ -1,5 +1,6 @@
 Rails.application.routes.draw do
 
+  resources :posts
   resources :companies
   resources :questions do
     resources :answers do
@@ -26,7 +27,6 @@ Rails.application.routes.draw do
              }
 
   root 'homes#index'
-  resources :companies
   resources :users do
     member do
       get :activate_user
