@@ -8,6 +8,7 @@ class User < ApplicationRecord
   has_many :created_questions, class_name: 'Question', foreign_key: :creator_id, dependent: :destroy
   has_many :created_answers, class_name: 'Answer', foreign_key: :creator_id, dependent: :destroy
   has_many :created_user_comment_vote, class_name: 'UserCommentVote', foreign_key: :creator_id, dependent: :destroy
+  has_many :created_user_question_vote, class_name: 'UserQuestionVote', foreign_key: :creator_id, dependent: :destroy
 
   validates :email,
             presence: true,
@@ -59,6 +60,14 @@ class User < ApplicationRecord
     end
   end
 
+  def total_asked_question
+    Question.where(creator_id: id).count
+  end
+
+  def total_given_answer
+    Answer.where(creator_id: id).count
+  end
+
   def total_accepted_answer
     Answer.accept_answers.where(creator_id: id).count
   end
@@ -69,16 +78,32 @@ class User < ApplicationRecord
     Question.where(id: questions_ids, creator_id: id).count
   end
 
-  def total_up_vote
+  def total_question_up_vote
+    total_up_vote = 0
+    Question.where(creator_id: id).each do |question|
+      total_up_vote += question.up_vote
+    end
+    total_up_vote
+  end
+
+  def total_question_down_vote
+    total_down_vote = 0
+    Question.where(creator_id: id).each do |question|
+      total_down_vote += question.down_vote
+    end
+    total_down_vote
+  end
+
+  def total_answer_up_vote
     UserCommentVote.up_votes.where(answer_creator_id: id).count
   end
 
-  def total_down_vote
+  def total_answer_down_vote
     UserCommentVote.down_votes.where(answer_creator_id: id).count
   end
 
   def total_score
-    (total_accepted_answer - own_question_accepted_answer)*10 + total_up_vote - total_down_vote
+    (total_accepted_answer - own_question_accepted_answer)*10 + total_question_up_vote + total_answer_up_vote - total_question_down_vote - total_answer_down_vote
   end
 
   def full_name

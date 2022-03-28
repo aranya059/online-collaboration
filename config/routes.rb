@@ -15,6 +15,10 @@ Rails.application.routes.draw do
     post :answer_up_vote
     post :answer_down_vote
   end
+  resources :user_question_vote do
+    post :question_up_vote
+    post :question_down_vote
+  end
   devise_for :users,
              controllers: {
                omniauth_callbacks: 'users/omniauth_callbacks',

@@ -1,5 +1,6 @@
 class UsersController < ApplicationController
   before_action :set_user, only: %i[activate_user update_activate_user destroy]
+  before_action :check_permission, only: %i[index update_activate_user destroy activate_user]
 
   def index
     respond_to do |format|
@@ -58,4 +59,12 @@ class UsersController < ApplicationController
                     flash: { error: invalid_id_error_message(e) }
     end
   end
+
+  def check_permission
+    if !current_user.is_admin?
+      redirect_back fallback_location: root_path,
+                    flash: { error: 'You are not eligible for this operation' }
+    end
+  end
+
 end
