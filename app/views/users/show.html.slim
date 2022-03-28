@@ -29,11 +29,17 @@
               td Number of total accepted answer of own question
               td = @user.own_question_accepted_answer
             tr
-              td Total up vote
-              td = @user.total_up_vote
+              td Number of total question up vote
+              td = @user.total_question_up_vote
             tr
-              td Total down vote
-              td = @user.total_down_vote
+              td Number of total question down vote
+              td = @user.total_question_down_vote
+            tr
+              td Number of total answer up vote
+              td = @user.total_answer_up_vote
+            tr
+              td Number of total answer down vote
+              td = @user.total_answer_down_vote
             tr
               td Total Score(Excluding points related to own question)
               td = @user.total_score

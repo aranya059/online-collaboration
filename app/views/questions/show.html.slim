@@ -12,7 +12,7 @@
               td = @question.code
             tr
               td Asked By
-              td = User.find_by_id(@question.creator_id).full_name
+              td.text-primary = link_to @question.creator.full_name, user_path(@question.creator)
             tr
               td Question
               td = @question.question_title

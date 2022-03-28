@@ -4,7 +4,7 @@ class UserQuestionVoteController < ApplicationController
   def question_up_vote
     @question = Question.find(params[:user_question_vote_id])
     if UserQuestionVote.find_by_question_id(@question.id) and UserQuestionVote.find_by_creator_id(current_user.id)
-      @user_question_vote= UserQuestionVote.find_by(question_id: @question.id, creator_id: current_user.id)
+      @user_question_vote = UserQuestionVote.find_by(question_id: @question.id, creator_id: current_user.id)
       @user_question_vote.question_creator_id = @question.creator_id
       if @user_question_vote.up_vote.eql?(true)
         @user_question_vote.down_vote = false

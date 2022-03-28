@@ -28,6 +28,10 @@ header#header class="main-header #{'pl-0' unless current_user.active?}"
               a href="#{edit_user_registration_path}"
                 i.mdi.mdi-account.text-brand
                 span My profile
+            li
+              a href="#{user_path}"
+                i.mdi.mdi-chart-histogram.text-brand
+                span My statistical details
 
             li.dropdown-footer
               = link_to destroy_user_session_path, method: :delete
