@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2022_03_04_111103) do
+ActiveRecord::Schema.define(version: 2022_03_28_085713) do
 
   create_table "action_text_rich_texts", charset: "utf8mb4", force: :cascade do |t|
     t.string "name", null: false
@@ -50,6 +50,38 @@ ActiveRecord::Schema.define(version: 2022_03_04_111103) do
     t.index ["blob_id", "variation_digest"], name: "index_active_storage_variant_records_uniqueness", unique: true
   end
 
+  create_table "answers", charset: "utf8mb4", force: :cascade do |t|
+    t.text "answer_text", null: false
+    t.bigint "creator_id"
+    t.bigint "question_id"
+    t.integer "up_vote", default: 0, null: false
+    t.integer "down_vote", default: 0, null: false
+    t.boolean "accept_status", default: false, null: false
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["creator_id"], name: "index_answers_on_creator_id"
+    t.index ["question_id"], name: "index_answers_on_question_id"
+  end
+
+  create_table "companies", charset: "utf8mb4", force: :cascade do |t|
+    t.string "code", default: "", null: false
+    t.string "name", default: "", null: false
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+  end
+
+  create_table "questions", charset: "utf8mb4", force: :cascade do |t|
+    t.string "question_title", default: "", null: false
+    t.string "code", default: "", null: false
+    t.bigint "creator_id"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.integer "visibility_status", default: 1
+    t.integer "up_vote", default: 0
+    t.integer "down_vote", default: 0
+    t.index ["creator_id"], name: "index_questions_on_creator_id"
+  end
+
   create_table "sessions", charset: "utf8mb4", force: :cascade do |t|
     t.string "session_id", null: false
     t.text "data"
@@ -59,6 +91,30 @@ ActiveRecord::Schema.define(version: 2022_03_04_111103) do
     t.index ["updated_at"], name: "index_sessions_on_updated_at"
   end
 
+  create_table "user_comment_votes", charset: "utf8mb4", force: :cascade do |t|
+    t.bigint "creator_id"
+    t.boolean "up_vote", default: false
+    t.boolean "down_vote", default: false
+    t.integer "answer_creator_id"
+    t.bigint "answer_id"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["answer_id"], name: "index_user_comment_votes_on_answer_id"
+    t.index ["creator_id"], name: "index_user_comment_votes_on_creator_id"
+  end
+
+  create_table "user_question_votes", charset: "utf8mb4", force: :cascade do |t|
+    t.bigint "creator_id"
+    t.boolean "up_vote", default: false
+    t.boolean "down_vote", default: false
+    t.integer "question_creator_id"
+    t.bigint "question_id"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["creator_id"], name: "index_user_question_votes_on_creator_id"
+    t.index ["question_id"], name: "index_user_question_votes_on_question_id"
+  end
+
   create_table "users", charset: "utf8mb4", force: :cascade do |t|
     t.string "email", default: "", null: false
     t.string "encrypted_password", default: "", null: false
@@ -66,9 +122,10 @@ ActiveRecord::Schema.define(version: 2022_03_04_111103) do
     t.string "last_name", default: "", null: false
     t.string "phone_number", default: "", null: false
     t.boolean "active", default: false
-    t.string "role", default: ""
+    t.boolean "is_admin", default: false
     t.string "designation", default: "", null: false
     t.integer "gender", null: false
+    t.bigint "company_id"
     t.string "reset_password_token"
     t.datetime "reset_password_sent_at"
     t.datetime "remember_created_at"
@@ -79,10 +136,19 @@ ActiveRecord::Schema.define(version: 2022_03_04_111103) do
     t.string "last_sign_in_ip"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
+    t.integer "role", default: 0
+    t.index ["company_id"], name: "index_users_on_company_id"
     t.index ["email"], name: "index_users_on_email", unique: true
     t.index ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true
   end
 
   add_foreign_key "active_storage_attachments", "active_storage_blobs", column: "blob_id"
   add_foreign_key "active_storage_variant_records", "active_storage_blobs", column: "blob_id"
+  add_foreign_key "answers", "questions"
+  add_foreign_key "answers", "users", column: "creator_id"
+  add_foreign_key "questions", "users", column: "creator_id"
+  add_foreign_key "user_comment_votes", "answers"
+  add_foreign_key "user_comment_votes", "users", column: "creator_id"
+  add_foreign_key "user_question_votes", "questions"
+  add_foreign_key "user_question_votes", "users", column: "creator_id"
 end

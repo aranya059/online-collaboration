@@ -1,0 +1,51 @@
+.row
+  .col-12
+    .card.card-default
+      .card-header.card-header-border-bottom.d-flex.justify-content-between
+        h2.text-brand.pl-3 User Details
+      .card-body
+        table#user-data-table.table.dt-user style="width: 100%;"
+          thead
+          tbody
+            tr
+              td Photo
+              td = image_tag url_for(@user.image.variant(resize: "100x100")), alt: 'User Photo'
+            tr
+              td Name
+              td = @user.full_name
+            tr
+              td Email
+              td = @user.email
+            tr
+              td Company
+              td = Company.find(@user.company_id).name
+            tr
+              td Role
+              td = @user.role
+            tr
+              td Number of total asked question
+              td = @user.total_asked_question
+            tr
+              td Number of total given answer
+              td = @user.total_given_answer
+            tr
+              td Number of total accepted answer
+              td = @user.total_accepted_answer
+            tr
+              td Number of total accepted answer of own question
+              td = @user.own_question_accepted_answer
+            tr
+              td Number of total question up vote
+              td = @user.total_question_up_vote
+            tr
+              td Number of total question down vote
+              td = @user.total_question_down_vote
+            tr
+              td Number of total answer up vote
+              td = @user.total_answer_up_vote
+            tr
+              td Number of total answer down vote
+              td = @user.total_answer_down_vote
+            tr
+              td Total Score(Excluding points related to own question)
+              td = @user.total_score

@@ -9,6 +9,8 @@ class UserDatatable < ApplicationDatatable
     users.map.with_index do |user, idx|
       [].tap do |column|
         column << @serials[user.id]
+        column << sanitize_text(user.full_name)
+        column << sanitize_text(Company.find(user.company_id).name)
         column << sanitize_text(user.email)
         column << if user.active?
                     "<div class='badge badge-success'>Active</div>".html_safe
@@ -62,13 +64,13 @@ class UserDatatable < ApplicationDatatable
     user_ids&.sort.each_with_index do |id, sl|
       @serials[id] = sl + 1
     end
-    users = @users.order("#{sort_column} #{sort_direction}")
+    users = @users.joins(:company).order("#{sort_column} #{sort_direction}")
     users = users.page(page).per_page(per_page)
     users = users.where(search_string.join(' or '), search: "%#{squish_text(params[:search][:value])}%")
     users
   end
 
   def columns
-    %w[users.id email active]
+    %w[users.id name companies.name email active]
   end
 end

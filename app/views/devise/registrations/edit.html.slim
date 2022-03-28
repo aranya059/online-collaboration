@@ -27,17 +27,6 @@
                 h4.py-1.text-brand = current_user.full_name
                 p.text-muted = current_user.designation
 
-                = image_tag current_user.get_signature,
-                        size: "150x70",
-                        class: 'btn d-flex justify-content-center mx-auto border-bottom mb-1',
-                        id: 'sign-upload'
-
-                = f.file_field :signature,
-                              id: 'sign-input',
-                              accept: ".jpeg, .jpg, .png",
-                              class: 'd-none'
-                .mdi.mdi-pen.text-brand.h3#edit-sign title="Edit Initial"
-
             hr.w-100
             .contact-info
               p.text-dark.font-weight-medium.pt-4.mb-2.mdi.mdi-email-outline.text-brand = " Email Address"
@@ -98,34 +87,35 @@
                                 class: 'form-control form-control-sm input-sm'
 
                       .form-group.col-lg-6.col-md-12
-                        label.text-muted Designation
-                        = f.text_field :designation,
+                        label.text-muted Current Company
+                        = f.collection_select :company_id,
+                                Company.all,
+                                :id, :name, { prompt: true }, required: true,
+                                class: 'form-control form-control-sm searchable-select'
+
+                    h2.text-brand.mb-4.mt-4.mdi.mdi-security = " Security"
+                    .row.mb-2
+                      .form-group.col-lg-6.col-md-12
+                        label.text-muted New Password
+                        = f.password_field :password,
                                 class: 'form-control form-control-sm input-sm'
+                        span.text-primary.small.mdi.mdi-information
+                        span.text-primary.small.ml-1 Leave empty if you do not want to change!
 
-                    - unless current_user.signed_with_microsoft?
-                      h2.text-brand.mb-4.mt-4.mdi.mdi-security = " Security"
-                      .row.mb-2
-                        .form-group.col-lg-6.col-md-12
-                          label.text-muted New Password
-                          = f.password_field :password,
-                                  class: 'form-control form-control-sm input-sm'
-                          span.text-primary.small.mdi.mdi-information
-                          span.text-primary.small.ml-1 Leave empty if you do not want to change!
+                      .form-group.col-lg-6.col-md-12
+                        label.text-muted Retype Password
+                        = f.password_field :password_confirmation,
+                                class: 'form-control input-sm form-control-sm'
 
-                        .form-group.col-lg-6.col-md-12
-                          label.text-muted Retype Password
-                          = f.password_field :password_confirmation,
-                                  class: 'form-control input-sm form-control-sm'
+                      .form-group.col-lg-12
+                        label.text-muted  Current Password
+                        span.req-field.ml-1 title="required" *
+                        = f.password_field :current_password,
+                                required: true,
+                                class: 'form-control input-sm form-control-sm'
 
-                        .form-group.col-lg-12
-                          label.text-muted  Current Password
-                          span.req-field.ml-1 title="required" *
-                          = f.password_field :current_password,
-                                  required: true,
-                                  class: 'form-control input-sm form-control-sm'
-
-                          span.text-primary.small.mdi.mdi-information
-                          span.text-primary.small.ml-2 You have to enter current password to save changes
+                        span.text-primary.small.mdi.mdi-information
+                        span.text-primary.small.ml-2 You have to enter current password to save changes
 
                     .d-flex.justify-content-end.mt-3
                       = button_tag type: 'submit',

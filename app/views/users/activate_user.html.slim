@@ -11,6 +11,14 @@
               = f.check_box :active
               .control-indicator
 
+          .form-group.col-lg-12.col-md-12
+            label Update User Role
+            = f.select :role,
+                    User.roles.keys.to_a,
+                    { prompt: 'Select one' },
+                    required: true,
+                    class: 'form-control form-control-sm input-sm'
+
           .form-footer.mt-4.pt-2.border-top
             = button_tag type: 'submit', class: 'button btn btn-sm btn-primary'
               i class = " mdi #{ @user.persisted? ? 'mdi-arrow-up-bold-circle' : 'mdi-content-save'} mt-0 mr-2" role="status"

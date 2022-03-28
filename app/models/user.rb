@@ -3,8 +3,12 @@ class User < ApplicationRecord
          :recoverable, :rememberable, :validatable,
          :trackable, :omniauthable, omniauth_providers: %i[azure_activedirectory_v2]
 
+  belongs_to :company
   has_one_attached :image
-  has_one_attached :signature
+  has_many :created_questions, class_name: 'Question', foreign_key: :creator_id, dependent: :destroy
+  has_many :created_answers, class_name: 'Answer', foreign_key: :creator_id, dependent: :destroy
+  has_many :created_user_comment_vote, class_name: 'UserCommentVote', foreign_key: :creator_id, dependent: :destroy
+  has_many :created_user_question_vote, class_name: 'UserQuestionVote', foreign_key: :creator_id, dependent: :destroy
 
   validates :email,
             presence: true,
@@ -23,10 +27,6 @@ class User < ApplicationRecord
             size: { less_than: 4.megabytes,
                     message: 'upload limit is 4 MB attachment' }
 
-  validates :signature,
-            content_type: %w[image/jpg image/jpeg image/png],
-            size: { less_than: 4.megabytes,
-                    message: 'upload limit is 4 MB attachment' }
 
   MALE = 0
   FEMALE = 1
@@ -38,12 +38,14 @@ class User < ApplicationRecord
     Other: OTHER
   }
 
-  GENERAL = 0
-  MICROSOFT = 1
+  EMPLOYEE = 0
+  MODERATOR = 1
+  ADMIN = 2
 
-  enum authentication_type: {
-    General: 0,
-    Microsoft: 1
+  enum role: {
+    Employee: EMPLOYEE,
+    Moderator: MODERATOR,
+    Admin: ADMIN
   }
 
   def displayed_image(version='original')
@@ -58,15 +60,50 @@ class User < ApplicationRecord
     end
   end
 
-
-  def get_signature
-    return signature if signature.attached?
-
-    ActionController::Base.helpers.asset_pack_path('media/images/white_bg.png')
+  def total_asked_question
+    Question.where(creator_id: id).count
   end
 
-  def signed_with_microsoft?
-    self.authentication_type.eql?(User.authentication_types.keys.last)
+  def total_given_answer
+    Answer.where(creator_id: id).count
+  end
+
+  def total_accepted_answer
+    Answer.accept_answers.where(creator_id: id).count
+  end
+
+  def own_question_accepted_answer
+    @answers = Answer.accept_answers.where(creator_id: id)
+    questions_ids = @answers.pluck(:question_id)
+    Question.where(id: questions_ids, creator_id: id).count
+  end
+
+  def total_question_up_vote
+    total_up_vote = 0
+    Question.where(creator_id: id).each do |question|
+      total_up_vote += question.up_vote
+    end
+    total_up_vote
+  end
+
+  def total_question_down_vote
+    total_down_vote = 0
+    Question.where(creator_id: id).each do |question|
+      total_down_vote += question.down_vote
+    end
+    total_down_vote
+  end
+
+  def total_answer_up_vote
+    UserCommentVote.up_votes.where(answer_creator_id: id).count
+  end
+
+  def total_answer_down_vote
+    UserCommentVote.down_votes.where(answer_creator_id: id).count
+  end
+
+  def total_score
+    (total_accepted_answer - own_question_accepted_answer)*10 + total_question_up_vote + total_answer_up_vote - total_question_down_vote - total_answer_down_vote
   end
 
   def full_name
@@ -77,6 +114,4 @@ class User < ApplicationRecord
     full_name += email.split('@')[0] unless full_name.present?
     full_name
   end
-
-
 end
