@@ -11,6 +11,8 @@ class PostsController < ApplicationController
   end
 
   def show
+    @comment = Comment.new
+    @comments = @post.comments.all
     add_breadcrumb 'Post Details'
   end
 

@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2022_03_28_204854) do
+ActiveRecord::Schema.define(version: 2022_03_28_211416) do
 
   create_table "action_text_rich_texts", charset: "utf8mb4", force: :cascade do |t|
     t.string "name", null: false
@@ -61,6 +61,15 @@ ActiveRecord::Schema.define(version: 2022_03_28_204854) do
     t.datetime "updated_at", precision: 6, null: false
     t.index ["creator_id"], name: "index_answers_on_creator_id"
     t.index ["question_id"], name: "index_answers_on_question_id"
+  end
+
+  create_table "comments", charset: "utf8mb4", force: :cascade do |t|
+    t.bigint "creator_id"
+    t.bigint "post_id"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["creator_id"], name: "index_comments_on_creator_id"
+    t.index ["post_id"], name: "index_comments_on_post_id"
   end
 
   create_table "companies", charset: "utf8mb4", force: :cascade do |t|
@@ -157,6 +166,8 @@ ActiveRecord::Schema.define(version: 2022_03_28_204854) do
   add_foreign_key "active_storage_variant_records", "active_storage_blobs", column: "blob_id"
   add_foreign_key "answers", "questions"
   add_foreign_key "answers", "users", column: "creator_id"
+  add_foreign_key "comments", "posts"
+  add_foreign_key "comments", "users", column: "creator_id"
   add_foreign_key "posts", "users", column: "creator_id"
   add_foreign_key "questions", "users", column: "creator_id"
   add_foreign_key "user_comment_votes", "answers"

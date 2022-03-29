@@ -1,6 +1,12 @@
 Rails.application.routes.draw do
 
-  resources :posts
+  resources :posts do
+    resources :comments do
+      collection do
+        post :add_comment
+      end
+    end
+  end
   resources :companies
   resources :questions do
     resources :answers do
@@ -12,6 +18,7 @@ Rails.application.routes.draw do
   resources :answers do
     put :accept_unaccepted_answer
   end
+  resources :comments
   resources :user_comment_vote do
     post :answer_up_vote
     post :answer_down_vote

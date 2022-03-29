@@ -8,6 +8,7 @@ class User < ApplicationRecord
   has_many :created_questions, class_name: 'Question', foreign_key: :creator_id, dependent: :destroy
   has_many :created_posts, class_name: 'Post', foreign_key: :creator_id, dependent: :destroy
   has_many :created_answers, class_name: 'Answer', foreign_key: :creator_id, dependent: :destroy
+  has_many :created_comments, class_name: 'Comment', foreign_key: :creator_id, dependent: :destroy
   has_many :created_user_comment_vote, class_name: 'UserCommentVote', foreign_key: :creator_id, dependent: :destroy
   has_many :created_user_question_vote, class_name: 'UserQuestionVote', foreign_key: :creator_id, dependent: :destroy
 
