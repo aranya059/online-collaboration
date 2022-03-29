@@ -1,6 +1,12 @@
-.card.mb-2.p-4.vh-100.d-flex.justify-content-center.align-content-center
+.card.mb-2
   - if current_user.active?
-    h1.text-brand.text-center Welcome to Online Collaboration
+    hr
+    marquee width="100%" direction="right"
+      .h2.text-brand.text-center.p-2 Welcome to Online Collaboration
+    hr
   -else
     h4.text-muted.text-center Your account is deactivated, Please contact with admin for further details
+
+- if current_user.active?
+
 

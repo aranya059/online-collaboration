@@ -52,7 +52,7 @@
                       i.mdi.mdi-check.mr-4
                 - if answer.accept_status and !current_user.id.eql?(@question.creator_id)
                   i.mdi.mdi-check-circle.mr-4 style="color:green"
-                - if current_user.is_admin.eql?(true) || current_user.id.eql?(@question.creator_id)
+                - if current_user.is_admin.eql?(true) || current_user.id.eql?(@question.creator_id) || current_user.id.eql?(answer.creator_id)
                   = link_to answer_path(answer),
                         method: :delete, data: { confirm: 'Are you sure, you want to delete this answer?' },
                         title: 'Delete'

@@ -1,6 +1,9 @@
 Rails.application.routes.draw do
 
   resources :posts do
+    member do
+      post :set_status
+    end
     resources :comments do
       collection do
         post :add_comment

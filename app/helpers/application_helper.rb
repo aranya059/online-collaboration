@@ -24,28 +24,6 @@ module ApplicationHelper
     }[flash_type.to_sym]
   end
 
-  def link_to_add_fields(name, f, association, class_names = '')
-    new_object = f.object.send(association).klass.new
-    id = new_object.object_id
-    fields = f.fields_for(association, new_object, child_index: id) do |builder|
-      render("#{association.to_s.singularize}_fields", f: builder, removable: true)
-    end
-    link_to('javascript:void(0)', class: "add_fields #{class_names}", data: { id: id, fields: fields.gsub("\n", '') }) do
-      "<i class='mdi mdi-plus mr-2'></i><span>#{name}</span>".html_safe
-    end
-  end
-
-  def link_to_add_fields_survey(name, f, association, class_names = '', section_id, subsection_id)
-    new_object = f.object.send(association).klass.new
-    id = new_object.object_id
-    fields = f.fields_for(association, new_object, child_index: id) do |builder|
-      render("#{association.to_s.singularize}_fields", f: builder, removable: true, section_id: section_id, subsection_id: subsection_id)
-    end
-    link_to('javascript:void(0)', class: "add_fields #{class_names}", data: { id: id, fields: fields.gsub("\n", '') }) do
-      "<i class='mdi mdi-plus mr-2'></i><span>#{name}</span>".html_safe
-    end
-  end
-
   def render_fields(f, association, key, value)
     new_object = f.object.send(association).klass.new
     id = new_object.object_id
@@ -115,6 +93,18 @@ module ApplicationHelper
                 "<span class='badge badge-danger'>Deactivated</span>"
               end
 
+    output.html_safe
+  end
+
+  def render_status(object)
+    output = ''
+    if object.Drafted?
+      output += "<span class='badge badge-secondary'>DRAFTED</span>"
+    elsif object.Published?
+      output += "<span class='badge badge-primary'>PUBLISHED</span>"
+    elsif object.Archived?
+      output += "<span class='badge badge-danger'>ARCHIVED</span>"
+    end
     output.html_safe
   end
 
