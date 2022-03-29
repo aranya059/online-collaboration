@@ -1,0 +1,15 @@
+= simple_form_for @comment, html: { class: 'form' } do |f|
+  fieldset.form-group
+    label.text-brand Add Comment
+    = f.rich_text_area :comment_description
+  .form-footer.mt-4.pt-2.border-top.d-flex.justify-content-center
+    = button_tag type: 'submit', class: 'button btn btn-sm btn-success'
+      i class = "mdi mdi-arrow-up-bold-circle mt-0 mr-2" role="status"
+      span.spinner-border.spinner-border-sm.mr-2.d-none aria-hidden="true" role="status"
+      span Update
+
+    = link_to post_path(@comment.post_id),
+            class: 'button btn btn-sm btn-secondary ml-2'
+      i.mdi.mdi-close-circle.mr-2 role="status"
+      span.spinner-border.spinner-border-sm.mr-2.d-none aria-hidden="true" role="status"
+      span Discard
