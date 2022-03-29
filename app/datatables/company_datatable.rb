@@ -16,15 +16,17 @@ class CompanyDatatable < ApplicationDatatable
         links << link_to("<i class='mdi mdi-eye-outline mr-2 text-brand font-23'></i>".html_safe,
                          company_path(company),
                          title: 'Show')
-        links << link_to("<i class='mdi mdi-square-edit-outline text-brand mr-2 font-23'></i>".html_safe,
-                         edit_company_path(company),
-                         title: 'Edit')
+        if check_permission
+          links << link_to("<i class='mdi mdi-square-edit-outline text-brand mr-2 font-23'></i>".html_safe,
+                           edit_company_path(company),
+                           title: 'Edit')
 
-        links << link_to("<i class='mdi mdi-delete mr-2 text-brand font-23'></i>".html_safe,
-                         company_path(company),
-                         title: 'Delete',
-                         method: :delete,
-                         data: {confirm: 'Are you sure you want to delete it?'})
+          links << link_to("<i class='mdi mdi-delete mr-2 text-brand font-23'></i>".html_safe,
+                           company_path(company),
+                           title: 'Delete',
+                           method: :delete,
+                           data: {confirm: 'Are you sure you want to delete it?'})
+        end
 
         column << links.join('')
       end

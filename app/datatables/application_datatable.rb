@@ -82,4 +82,11 @@ class ApplicationDatatable
       'No'
     end
   end
+  def check_permission
+    if @current_user.is_admin.eql?(true)
+      true
+    else
+      false
+    end
+  end
 end
