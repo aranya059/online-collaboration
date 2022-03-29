@@ -14,7 +14,7 @@ class Post < ApplicationRecord
   PUBLISHED = 2
   ARCHIVED = 3
 
-  enum status: {
+  enum post_status: {
     Drafted: DRAFTED,
     Published: PUBLISHED,
     Archived: ARCHIVED

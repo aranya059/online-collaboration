@@ -3,6 +3,7 @@
     .card.card-default
       .card-header.card-header-border-bottom.d-flex.justify-content-between
         h2.text-brand.pl-3 Post Details
+        = render_status(@post)
       .card-body
         table#responsive-data-table.table.dt-responsive style="width: 100%;"
           thead
@@ -22,6 +23,15 @@
           == @post.post_additional_description
           .mt-4.pt-2.border-top.d-flex.justify-content-center
             - if current_user.is_admin.eql?(true) || current_user.id.eql?(@post.creator_id)
+              - if @post.post_status.eql?('Drafted')
+                = form_tag set_status_post_path(@post), class: 'form-inline',
+                        data: { confirm:  'Confirm submit' },
+                        method: :post do
+                  = hidden_field_tag :post_status, Post.post_statuses.key(Post::PUBLISHED)
+                  = button_tag type: 'submit', name: nil, class: 'button btn btn-sm btn-success'
+                    i.mdi.mdi-file-document.mt-0.mr-2 role="status"
+                    span.spinner-border.spinner-border-sm.mr-2.d-none aria-hidden="true" role="status"
+                    span Publish
               = link_to edit_post_path(@post),
                       class: 'button btn btn-sm btn-primary ml-2'
                 i.mdi.mdi-account-edit.mt-0.mr-2 role="status"
@@ -38,23 +48,24 @@
               i.mdi.mdi-close-circle.mr-2 role="status"
               span.spinner-border.spinner-border-sm.mr-2.d-none aria-hidden="true" role="status"
               span Discard
-        = form_for @comment, url: add_comment_post_comments_path(@post), method: :post, html: { class: 'form col-12' } do |f|
-          = hidden_field_tag :post_id, @post.id
-          = f.hidden_field :creator_id, value: current_user.id
-          .row
-            .col-12
-              .card-body
-                fieldset.form-group
-                  label.text-brand Add Comment
-                  = f.rich_text_area :comment_description
-                = button_tag type: 'submit', name: nil, class: 'button btn btn-sm btn-success'
-                  i.mdi.mdi-account-check.mt-0.mr-2 role="status"
-                  span.spinner-border.spinner-border-sm.mr-2.d-none aria-hidden="true" role="status"
-                  span Post
-                = link_to posts_path,
-                        class: 'button btn btn-sm btn-secondary ml-2'
-                  i.mdi.mdi-close-circle.mr-2 role="status"
-                  span.spinner-border.spinner-border-sm.mr-2.d-none aria-hidden="true" role="status"
-                  span Discard
+        - if @post.post_status.eql?('Published')
+          = form_for @comment, url: add_comment_post_comments_path(@post), method: :post, html: { class: 'form col-12' } do |f|
+            = hidden_field_tag :post_id, @post.id
+            = f.hidden_field :creator_id, value: current_user.id
+            .row
+              .col-12
+                .card-body
+                  fieldset.form-group
+                    label.text-brand Add Comment
+                    = f.rich_text_area :comment_description
+                  = button_tag type: 'submit', name: nil, class: 'button btn btn-sm btn-success'
+                    i.mdi.mdi-account-check.mt-0.mr-2 role="status"
+                    span.spinner-border.spinner-border-sm.mr-2.d-none aria-hidden="true" role="status"
+                    span Post
+                  = link_to posts_path,
+                          class: 'button btn btn-sm btn-secondary ml-2'
+                    i.mdi.mdi-close-circle.mr-2 role="status"
+                    span.spinner-border.spinner-border-sm.mr-2.d-none aria-hidden="true" role="status"
+                    span Discard
 
-        = render partial: 'all_comment'
+          = render partial: 'all_comment'

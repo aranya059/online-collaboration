@@ -57,6 +57,23 @@ class PostsController < ApplicationController
                   flash: { error: 'Operation could not be completed.' }
     end
   end
+  
+  def set_status
+    begin
+      @post = Post.find(params[:id])
+      @post.post_status = (params[:post_status])
+      if @post.save
+        redirect_back fallback_location: root_path,
+                      notice: "Post status changed to #{params[:post_status]}"
+      else
+        redirect_back fallback_location: root_path,
+                      flash: { error: "Operations could not be completed" }
+      end
+    rescue StandardError => e
+      redirect_back fallback_location: root_path,
+                    flash: { error: "Operations could not be completed"  }
+    end
+  end
 
   def index_breadcrumb
     add_breadcrumb 'Posts', posts_path
