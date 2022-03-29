@@ -1,5 +1,6 @@
 class CompaniesController < ApplicationController
   before_action :set_company, only: %i[ show edit update destroy ]
+  before_action :check_permission, only: %i[new create edit update destroy ]
 
   def index
     respond_to do |format|
@@ -63,4 +64,18 @@ class CompaniesController < ApplicationController
       params.require(:company).permit(:name,
                                       :additional_description)
     end
+
+  def check_permission
+    begin
+      if current_user.is_admin.eql?(true)
+        true
+      else
+        redirect_back fallback_location: root_path,
+                      flash: { error: 'You are not eligible to make this change' }
+      end
+    rescue StandardError => e
+      redirect_back fallback_location: root_path,
+                    flash: { error: invalid_id_error_message(e) }
+    end
+  end
 end

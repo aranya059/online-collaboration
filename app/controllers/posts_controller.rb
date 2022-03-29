@@ -12,7 +12,7 @@ class PostsController < ApplicationController
 
   def show
     @comment = Comment.new
-    @comments = @post.comments.all
+    @comments = @post.comments.all.order(created_at: :desc)
     add_breadcrumb 'Post Details'
   end
 

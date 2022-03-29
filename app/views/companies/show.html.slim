@@ -13,20 +13,33 @@
             tr
               td Name
               td = @company.name
+            tr
+              td Number of Admins
+              td = @company.total_admins
+            tr
+              td Number of Moderators
+              td = @company.total_moderators
+            tr
+              td Number of employees
+              td = @company.total_employees
+            tr
+              td Total
+              td = @company.total
         h4.card-title.text-brand
           label Additional Description
         p.card-text
           == @company.additional_description
         .mt-4.pt-2.border-top.d-flex.justify-content-center
-          = link_to edit_company_path(@company),
-                  class: 'button btn btn-sm btn-primary ml-2'
-            i.mdi.mdi-account-edit.mt-0.mr-2 role="status"
-            span.spinner-border.spinner-border-sm.mr-2.d-none aria-hidden="true" role="status"
-            span Edit
-          = link_to company_path(@company),
-                  method: :delete, data: {confirm: 'Are you sure you want to delete?'},
-                  class: 'button btn btn-sm btn-danger ml-2'
-            i.mdi.mdi-delete.mr-2 role="status"
+          - if current_user.is_admin?
+            = link_to edit_company_path(@company),
+                    class: 'button btn btn-sm btn-primary ml-2'
+              i.mdi.mdi-account-edit.mt-0.mr-2 role="status"
+              span.spinner-border.spinner-border-sm.mr-2.d-none aria-hidden="true" role="status"
+              span Edit
+            = link_to company_path(@company),
+                    method: :delete, data: {confirm: 'Are you sure you want to delete?'},
+                    class: 'button btn btn-sm btn-danger ml-2'
+              i.mdi.mdi-delete.mr-2 role="status"
             span.spinner-border.spinner-border-sm.mr-2.d-none aria-hidden="true" role="status"
             span Delete
           = link_to companies_path,

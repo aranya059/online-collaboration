@@ -12,7 +12,7 @@ class QuestionsController < ApplicationController
 
   def show
     @answer = Answer.new
-    @answers = @question.answers.all
+    @answers = @question.answers.all.order(created_at: :desc)
     @user_comment_vote = UserCommentVote.new
     add_breadcrumb 'Question Details'
   end

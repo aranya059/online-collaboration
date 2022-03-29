@@ -5,4 +5,20 @@ class Company < ApplicationRecord
   def set_code
     update(code: "COM-#{id}")
   end
+
+  def total_admins
+    User.where(company_id: id, role: 2).count
+  end
+
+  def total_moderators
+    User.where(company_id: id, role: 1).count
+  end
+
+  def total_employees
+    User.where(company_id: id, role: 0).count
+  end
+
+  def total
+    User.where(company_id: id).count
+  end
 end

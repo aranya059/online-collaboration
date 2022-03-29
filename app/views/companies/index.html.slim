@@ -2,11 +2,12 @@
   .card.card-default
     .card-header.card-header-border-bottom.row.col-12.d-flex.justify-content-between.px-4.align-content-center
       p.h2.text-brand Companies
-      = link_to new_company_path,
-              class: 'btn btn-sm btn-brand text-white'
-        i.mdi.mdi-plus.mr-1 role="status"
-        span.spinner-border.spinner-border-sm.mr-2.d-none aria-hidden="true" role="status"
-        span Add New
+      - if current_user.is_admin.eql?(true)
+        = link_to new_company_path,
+                class: 'btn btn-sm btn-brand text-white'
+          i.mdi.mdi-plus.mr-1 role="status"
+          span.spinner-border.spinner-border-sm.mr-2.d-none aria-hidden="true" role="status"
+          span Add New
 
     .card-body
       = content_tag :table,

@@ -29,19 +29,18 @@ aside.left-sidebar.bg-sidebar.bg-brand
                 a.sidenav-item-link href="#{posts_path}"
                   span.nav-text Posts
 
-        - if current_user.is_admin.eql?(true)
-          li.has-sub
-            a.sidenav-item-link aria-controls="setup" aria-expanded="false" data-target="#setup" data-toggle="collapse" href="javascript:void(0)"
-              i.mdi.mdi-settings
-              span.nav-text Setup
-              b.caret
-            ul#setup.collapse data-parent="#sidebar-menu"
-              .sub-menu
-                - if current_user.is_admin.eql?(true)
-                  li
-                    a.sidenav-item-link href="#{users_path}"
-                      span.nav-text User Management
-                  li
-                    a.sidenav-item-link href="#{companies_path}"
-                      span.nav-text Company Management
+        li.has-sub
+          a.sidenav-item-link aria-controls="setup" aria-expanded="false" data-target="#setup" data-toggle="collapse" href="javascript:void(0)"
+            i.mdi.mdi-settings
+            span.nav-text Setup
+            b.caret
+          ul#setup.collapse data-parent="#sidebar-menu"
+            .sub-menu
+              - if current_user.is_admin.eql?(true)
+                li
+                  a.sidenav-item-link href="#{users_path}"
+                    span.nav-text User Management
+              li
+                a.sidenav-item-link href="#{companies_path}"
+                  span.nav-text Companies
 
