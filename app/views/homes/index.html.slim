@@ -8,5 +8,98 @@
     h4.text-muted.text-center Your account is deactivated, Please contact with admin for further details
 
 - if current_user.active?
+  .row
+    .col-6
+      .card.card-default
+        H3.text-brand.text-center Top 5 question of all time
+        .card-header.card-header-border-bottom.row.col-12.d-flex.justify-content-between.px-4.align-content-center
+          .card-body
+            table.table.dt-responsive style="width: 100%;"
+              thead
+                tr
+                  th SL
+                  th Asked By
+                  th Question
+                  th up Vote
+                  th.nosort.actions Actions
+              tbody
+                - @top_questions.each_with_index do |question, i|
+                  tr
+                    td = i + 1
+                    td.text-primary = link_to question.creator.full_name, user_path(question.creator)
+                    td = question.question_title
+                    td = question.up_vote
+                    td.actions.p-1
+                      = link_to question_path(question), title: 'Show'
+                        i.mdi.mdi-eye-outline.mr-4
+
+    .col-6
+      .card.card-default
+        H3.text-brand.text-center Top 5 questions of last week
+        .card-header.card-header-border-bottom.row.col-12.d-flex.justify-content-between.px-4.align-content-center
+          .card-body
+            table.table.dt-responsive style="width: 100%;"
+              thead
+                tr
+                  th SL
+                  th Asked By
+                  th Question
+                  th up Vote
+                  th.nosort.actions Actions
+              tbody
+                - @top_up_voted_questions.each_with_index do |question, i|
+                  tr
+                    td = i + 1
+                    td.text-primary = link_to question.creator.full_name, user_path(question.creator)
+                    td = question.question_title
+                    td = question.up_vote
+                    td.actions.p-1
+                      = link_to question_path(question), title: 'Show'
+                        i.mdi.mdi-eye-outline.mr-4
+  .row
+    .col-6
+      .card.card-default
+        H3.text-brand.text-center Top 5 contributors of all time
+        .card-header.card-header-border-bottom.row.col-12.d-flex.justify-content-between.px-4.align-content-center
+          .card-body
+            table.table.dt-responsive style="width: 100%;"
+              thead
+                tr
+                  th SL
+                  th Name
+                  th Company
+                  th Total Score
+              tbody
+                - @top_contributors.each_with_index do |user, i|
+                  tr
+                    td = i + 1
+                    td.text-primary = link_to user.full_name, user_path(user)
+                    td = Company.find(user.company_id).name
+                    td = user.total_score
+
+    .col-6
+      .card.card-default
+        H3.text-brand.text-center Top 5 companies
+        .card-header.card-header-border-bottom.row.col-12.d-flex.justify-content-between.px-4.align-content-center
+          .card-body
+            table.table.dt-responsive style="width: 100%;"
+              thead
+                tr
+                  th SL
+                  th Name
+                  th Total Employees
+                  th.nosort.actions Actions
+              tbody
+                - @top_companies.each_with_index do |company, i|
+                  - if i==5
+                    break
+                  - else
+                    tr
+                      td = i + 1
+                      td = company.name
+                      td = company.total
+                      td.actions.p-1
+                        = link_to company_path(company), title: 'Show'
+                          i.mdi.mdi-eye-outline.mr-4
 
 
