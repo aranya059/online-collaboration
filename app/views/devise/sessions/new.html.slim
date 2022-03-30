@@ -6,6 +6,7 @@
           .card
             .bg-brand
               .card-header.bg-brand.mx-auto.justify-content-center.d-flex
+                = image_pack_tag 'OC_Logo.png', class: 'login-page-logo brand-name text-truncate'
             .card-body.pb-5.pt-3.px-5
               h2.text-brand.mb-2.text-center Log In
               - if flash.any?
@@ -45,12 +46,6 @@
                         .control-indicator
                 .col-md-12
                   button.btn.btn-success.btn-block.text-white.my-2 type="submit"  Log In
-                  / = link_to user_azure_activedirectory_v2_omniauth_authorize_path,
-                  /         method: :post,
-                  /         class: 'btn btn-info btn-block'
-                  /   i.mdi.mdi-windows.mr-2.h4 role="status"
-                  /   span.spinner-border.spinner-border-sm.mr-2.d-none aria-hidden="true" role="status"
-                  /   span Login with Microsoft
                   = link_to 'Sign up',
                           new_registration_path(resource_name),
                           class: 'btn btn-block btn-brand text-white'

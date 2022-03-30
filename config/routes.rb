@@ -43,5 +43,7 @@ Rails.application.routes.draw do
       post :update_activate_user
     end
   end
+  resources :blogs
+  resources :collaborations
 
 end
