@@ -1,6 +1,7 @@
 class PostDatatable < ApplicationDatatable
   delegate :post_path, to: :@view
   delegate :edit_post_path, to: :@view
+  delegate :user_path, to: :@view
 
   private
 
@@ -9,8 +10,15 @@ class PostDatatable < ApplicationDatatable
       [].tap do |column|
         column << @serials[post.id]
         column << sanitize_text(post.code)
+        column << if post.Drafted?
+                    "<div class='badge badge-secondary'>DRAFTED</div>".html_safe
+                  elsif post.Published?
+                    "<div class='badge badge-primary'>PUBLISHED</div>".html_safe
+                  else
+                    "<div class='badge badge-danger'>ARCHIVED</div>".html_safe
+                  end
         column << sanitize_text(post.post_title)
-        column << sanitize_text(post.creator.full_name)
+        column << link_to(post.creator.full_name.html_safe, user_path(post.creator))
         column << show_datetime(post.created_at.localtime)
         column << show_datetime(post.updated_at.localtime)
 
@@ -60,7 +68,7 @@ class PostDatatable < ApplicationDatatable
     elsif @current_user.role.eql?('Admin')
       visible_admin_post_ids = []
       self_post_ids = Post.where(creator_id: @current_user.id).pluck(:id)
-      visible_all_post_ids = Post.where(post_visibility_status: 'All').pluck(:id)
+      visible_all_post_ids = Post.where(post_visibility_status: 'All', post_status: Post::PUBLISHED).pluck(:id)
       Post.all.where(post_visibility_status: ['Admins' , 'All Employee'], post_status: Post::PUBLISHED).each do |post|
         if User.find_by_id(post.creator_id).company_id.eql?(@current_user.company_id)
           visible_admin_post_ids << post.id
@@ -71,8 +79,13 @@ class PostDatatable < ApplicationDatatable
     elsif @current_user.role.eql?('Moderator')
       visible_moderator_post_ids = []
       self_post_ids = Post.where(creator_id: @current_user.id).pluck(:id)
-      visible_all_post_ids = Post.where(post_visibility_status: 'All').pluck(:id)
+      visible_all_post_ids = Post.where(post_visibility_status: 'All', post_status: Post::PUBLISHED).pluck(:id)
       Post.all.where(post_visibility_status: 'All Employee', post_status: Post::PUBLISHED).each do |post|
+        if User.find_by_id(post.creator_id).company_id.eql?(@current_user.company_id)
+          visible_moderator_post_ids << post.id
+        end
+      end
+      Post.all.where(post_status: Post::ARCHIVED).each do |post|
         if User.find_by_id(post.creator_id).company_id.eql?(@current_user.company_id)
           visible_moderator_post_ids << post.id
         end
@@ -82,7 +95,7 @@ class PostDatatable < ApplicationDatatable
     else
       visible_employee_post_ids = []
       self_post_ids = Post.where(creator_id: @current_user.id).pluck(:id)
-      visible_all_post_ids = Post.where(post_visibility_status: 'All').pluck(:id)
+      visible_all_post_ids = Post.where(post_visibility_status: 'All', post_status: Post::PUBLISHED).pluck(:id)
       Post.all.where(post_visibility_status: ['Employees' , 'All Employee'], post_status: Post::PUBLISHED).each do |post|
         if User.find_by_id(post.creator_id).company_id.eql?(@current_user.company_id)
           visible_employee_post_ids << post.id
@@ -104,6 +117,6 @@ class PostDatatable < ApplicationDatatable
   end
 
   def columns
-    %w[posts.id posts.code posts.post_title users.email posts.created_at posts.updated_at]
+    %w[posts.id posts.code posts.id posts.post_title users.email posts.created_at posts.updated_at]
   end
 end
