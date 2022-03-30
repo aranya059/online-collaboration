@@ -25,13 +25,22 @@
             - if current_user.is_admin.eql?(true) || current_user.id.eql?(@post.creator_id)
               - if @post.post_status.eql?('Drafted')
                 = form_tag set_status_post_path(@post), class: 'form-inline',
-                        data: { confirm:  'Confirm submit' },
+                        data: { confirm:  'Confirm publish?' },
                         method: :post do
                   = hidden_field_tag :post_status, Post.post_statuses.key(Post::PUBLISHED)
                   = button_tag type: 'submit', name: nil, class: 'button btn btn-sm btn-success'
                     i.mdi.mdi-file-document.mt-0.mr-2 role="status"
                     span.spinner-border.spinner-border-sm.mr-2.d-none aria-hidden="true" role="status"
                     span Publish
+              - if @post.post_status.eql?('Published')
+                = form_tag set_status_post_path(@post), class: 'form-inline',
+                        data: { confirm: 'Confirm archive?' },
+                        method: :post do
+                  = hidden_field_tag :post_status, Post.post_statuses.key(Post::ARCHIVED)
+                  = button_tag type: 'submit', name: nil, class: 'button btn btn-sm btn-danger'
+                    i.mdi.mdi-file-document.mt-0.mr-2 role="status"
+                    span.spinner-border.spinner-border-sm.mr-2.d-none aria-hidden="true" role="status"
+                    span Archive
               = link_to edit_post_path(@post),
                       class: 'button btn btn-sm btn-primary ml-2'
                 i.mdi.mdi-account-edit.mt-0.mr-2 role="status"
