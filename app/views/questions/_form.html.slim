@@ -9,7 +9,7 @@
   label Visibility
   span.req-field.ml-1 title="required" *
   = f.select :visibility_status,
-          Question.visibilities.keys.to_a,
+          Question::QUESTION_VISIBILITY_STATUS,
           { prompt: 'Select visibility' },
           required: true,
           class: 'form-control form-control-sm input-sm'

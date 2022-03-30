@@ -1,20 +1,16 @@
 aside.left-sidebar.bg-sidebar.bg-brand
   #sidebar.sidebar.bg-brand
     .app-brand.py-1
-      = image_pack_tag 'OC.png', class: 'sidebar-logo brand-name text-truncate'
+      = image_pack_tag 'OC_Logo.png', class: 'sidebar-logo brand-name text-truncate'
     .sidebar-scrollbar.bg-brand
       ul#sidebar-menu.nav.sidebar-inner
         li
           a.sidenav-item-link href="#{root_path}"
             i.mdi.mdi-home
             span.nav-text Home
-        li
-          a.sidenav-item-link href="#{user_path(id: current_user.id)}"
-            i.mdi.mdi-chart-histogram
-            span My statistical details
         li.has-sub
           a.sidenav-item-link aria-controls="collaboration" aria-expanded="false" data-target="#collaboration" data-toggle="collapse" href="javascript:void(0)"
-            i.mdi.mdi-comment-text
+            i.mdi.mdi-frequently-asked-questions
             span.nav-text Collaboration
             b.caret
           ul#collaboration.collapse data-parent="#sidebar-menu"
@@ -22,20 +18,41 @@ aside.left-sidebar.bg-sidebar.bg-brand
               li
                 a.sidenav-item-link href="#{questions_path}"
                   span.nav-text Questions
+        li.has-sub
+          a.sidenav-item-link aria-controls="blog" aria-expanded="false" data-target="#blog" data-toggle="collapse" href="javascript:void(0)"
+            i.mdi.mdi-newspaper
+            span.nav-text Blog
+            b.caret
+          ul#blog.collapse data-parent="#sidebar-menu"
+            .sub-menu
+              li
+                a.sidenav-item-link href="#{posts_path}"
+                  span.nav-text Posts
+        li.has-sub
+          a.sidenav-item-link aria-controls="guide" aria-expanded="false" data-target="#guide" data-toggle="collapse" href="javascript:void(0)"
+            i.mdi.mdi-book-open-variant
+            span.nav-text Guide
+            b.caret
+          ul#guide.collapse data-parent="#sidebar-menu"
+            .sub-menu
+              li
+                a.sidenav-item-link href="#{collaborations_path}"
+                  span.nav-text How to use collaboration
+                a.sidenav-item-link href="#{blogs_path}"
+                  span.nav-text How to use bolg
 
-        - if current_user.is_admin.eql?(true)
-          li.has-sub
-            a.sidenav-item-link aria-controls="setup" aria-expanded="false" data-target="#setup" data-toggle="collapse" href="javascript:void(0)"
-              i.mdi.mdi-settings
-              span.nav-text Setup
-              b.caret
-            ul#setup.collapse data-parent="#sidebar-menu"
-              .sub-menu
-                - if current_user.is_admin.eql?(true)
-                  li
-                    a.sidenav-item-link href="#{users_path}"
-                      span.nav-text User Management
-                  li
-                    a.sidenav-item-link href="#{companies_path}"
-                      span.nav-text Company Management
+        li.has-sub
+          a.sidenav-item-link aria-controls="setup" aria-expanded="false" data-target="#setup" data-toggle="collapse" href="javascript:void(0)"
+            i.mdi.mdi-settings
+            span.nav-text Setup
+            b.caret
+          ul#setup.collapse data-parent="#sidebar-menu"
+            .sub-menu
+              - if current_user.is_admin.eql?(true)
+                li
+                  a.sidenav-item-link href="#{users_path}"
+                    span.nav-text User Management
+              li
+                a.sidenav-item-link href="#{companies_path}"
+                  span.nav-text Companies
 

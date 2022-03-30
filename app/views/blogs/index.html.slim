@@ -1,0 +1,43 @@
+.col-12
+  .card.card-default
+    .card-header.card-header-border-bottom.row.col-12.d-flex.justify-content-between.px-4.align-content-center
+      p.h4.text-brand.col-12 Step by guide of Blog
+      .just-padding.col-12
+        .list-group.list-group-root.well
+          a.list-group-item.text-info.h5  Step 1
+          .list-group
+            a.list-group-item.text-dark  Go to Blog > Post from sidebar
+            .list-group
+              a.list-group-item = image_pack_tag 'b1.png', class: 'collaboration-guide-vertical brand-name text-truncate'
+          a.list-group-item.text-info.h5 Step 2
+          .list-group
+            a.list-group-item.text-dark  Then go to Add New for post a blog
+            .list-group
+              a.list-group-item = image_pack_tag 'b2.png', class: 'collaboration-guide-horizontal brand-name text-truncate'
+          a.list-group-item.text-info.h5  Step 3
+          .list-group
+            a.li-item.text-dark  1. Select who can see this blog from visibility
+            a.li-item.text-dark  2. Write down the post in the Create Post field
+            a.li-item.text-dark  3. Write down additional description(optional)
+            a.li-item.text-dark  4. Click save
+            .list-group
+              a.list-group-item = image_pack_tag 'b3.png', class: 'collaboration-guide-horizontal brand-name text-truncate'
+          a.list-group-item.text-info.h5  Step 4
+          .list-group
+            a.li-item.text-dark  1. You can see list of posts and do view, edit and delete if necessary
+            a.li-item.text-dark  2. Click view from action to see post details and add comment
+            .list-group
+              a.list-group-item = image_pack_tag 'b4.png', class: 'collaboration-guide-horizontal brand-name text-truncate'
+          a.list-group-item.text-info.h5  Step 5
+          .list-group
+            a.li-item.text-dark  1. Here you can add your comment
+            a.li-item.text-dark  2. You can add any file or image in comment box if you want
+            a.li-item.text-dark  3. Click post
+            .list-group
+              a.list-group-item = image_pack_tag 'b5.png', class: 'collaboration-guide-horizontal brand-name text-truncate'
+
+      = link_to root_path,
+              class: 'button btn btn-sm btn-secondary ml-2'
+        i.mdi.mdi-close-circle.mr-2 role="status"
+        span.spinner-border.spinner-border-sm.mr-2.d-none aria-hidden="true" role="status"
+        span Discard

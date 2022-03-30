@@ -14,6 +14,23 @@ class UsersController < ApplicationController
 
   def show
     @user = User.find(params[:id])
+    question_ids = []
+    answer_ids = []
+    Question.where(creator_id: @user.id).each do |question|
+      unless question.up_vote.eql?(0) and question.down_vote.eql?(0)
+        question_ids << question.id
+      end
+    end
+
+    UserCommentVote.all.each do |user_comment|
+      if user_comment.answer_creator_id.eql?( @user.id)
+        answer_ids << user_comment.answer_id
+      end
+    end
+    question_answer_ids = Answer.where(id: answer_ids).pluck(:question_id)
+    user_score_source_question_ids = question_ids + question_answer_ids
+    puts user_score_source_question_ids
+    @questions = Question.where(id: user_score_source_question_ids)
   end
 
   def update_activate_user

@@ -59,15 +59,13 @@ class QuestionDatatable < ApplicationDatatable
       @questions = Question.all
     else
       colleagues_ids = []
-      Question.all.where(visibility_status: Question::COLLEAGUES).each do |question|
-        puts "@@@"
-        puts User.find_by_id(question.creator_id).company_id
+      Question.all.where(visibility_status: "Colleagues").each do |question|
         if User.find_by_id(question.creator_id).company_id.eql?(User.find_by_id(@current_user.id).company_id)
           colleagues_ids << question.creator_id
         end
       end
-      visibility_everyone_question_ids = Question.where(visibility_status: Question::EVERYONE).pluck(:id)
-      colleagues_question_ids = Question.where(visibility_status: Question::COLLEAGUES, creator_id: colleagues_ids).pluck(:id)
+      visibility_everyone_question_ids = Question.where(visibility_status: "Everyone").pluck(:id)
+      colleagues_question_ids = Question.where(visibility_status: "Colleagues", creator_id: colleagues_ids).pluck(:id)
       question_ids = visibility_everyone_question_ids + colleagues_question_ids
       @questions = Question.all.where(id: question_ids)
     end
