@@ -55,21 +55,42 @@ class PostDatatable < ApplicationDatatable
       search_string << "#{term} like :search"
     end
 
-    @posts = Post.all
-    # if @current_user.is_admin.eql?(true)
-    #   @posts = Post.all
-    # else
-    #   colleagues_ids = []
-    #   Post.all.where(visibility_status: Post::COLLEAGUES).each do |post|
-    #     if User.find_by_id(post.creator_id).company_id.eql?(User.find_by_id(@current_user.id).company_id)
-    #       colleagues_ids << post.creator_id
-    #     end
-    #   end
-    #   visibility_everyone_post_ids = Post.where(visibility_status: Post::EVERYONE).pluck(:id)
-    #   colleagues_post_ids = Post.where(visibility_status: Post::COLLEAGUES, creator_id: colleagues_ids).pluck(:id)
-    #   post_ids = visibility_everyone_post_ids + colleagues_post_ids
-    #   @posts = Post.all.where(id: post_ids)
-    # end
+    if @current_user.is_admin.eql?(true)
+      @posts = Post.all
+    elsif @current_user.role.eql?('Admin')
+      visible_admin_post_ids = []
+      self_post_ids = Post.where(creator_id: @current_user.id).pluck(:id)
+      visible_all_post_ids = Post.where(post_visibility_status: 'All').pluck(:id)
+      Post.all.where(post_visibility_status: ['Admins' , 'All Employee'], post_status: Post::PUBLISHED).each do |post|
+        if User.find_by_id(post.creator_id).company_id.eql?(@current_user.company_id)
+          visible_admin_post_ids << post.id
+        end
+      end
+      post_ids = visible_all_post_ids + self_post_ids + visible_admin_post_ids
+      @posts = Post.all.where(id: post_ids)
+    elsif @current_user.role.eql?('Moderator')
+      visible_moderator_post_ids = []
+      self_post_ids = Post.where(creator_id: @current_user.id).pluck(:id)
+      visible_all_post_ids = Post.where(post_visibility_status: 'All').pluck(:id)
+      Post.all.where(post_visibility_status: 'All Employee', post_status: Post::PUBLISHED).each do |post|
+        if User.find_by_id(post.creator_id).company_id.eql?(@current_user.company_id)
+          visible_moderator_post_ids << post.id
+        end
+      end
+      post_ids = visible_all_post_ids + self_post_ids + visible_moderator_post_ids
+      @posts = Post.all.where(id: post_ids)
+    else
+      visible_employee_post_ids = []
+      self_post_ids = Post.where(creator_id: @current_user.id).pluck(:id)
+      visible_all_post_ids = Post.where(post_visibility_status: 'All').pluck(:id)
+      Post.all.where(post_visibility_status: ['Employees' , 'All Employee'], post_status: Post::PUBLISHED).each do |post|
+        if User.find_by_id(post.creator_id).company_id.eql?(@current_user.company_id)
+          visible_employee_post_ids << post.id
+        end
+      end
+      post_ids = visible_all_post_ids + self_post_ids + visible_employee_post_ids
+      @posts = Post.all.where(id: post_ids)
+    end
     @serials = {}
 
     post_ids = @posts.pluck(:id)
