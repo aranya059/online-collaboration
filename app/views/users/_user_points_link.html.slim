@@ -1,0 +1,18 @@
+.row
+  .col-12
+    h4.text-brand.pl-3 User point sources
+    .card-body
+      table#responsive-data-table.table.dt-responsive style="width: 100%;"
+        thead
+          tr
+            th SL
+            th Question
+            th.nosort.actions Actions
+        tbody
+          - @questions.each_with_index do |question, i|
+            tr
+              td = i + 1
+              td = question.question_title
+              td.actions
+                = link_to question_path(question), title: 'Show'
+                  i.mdi.mdi-eye-outline.mr-4
