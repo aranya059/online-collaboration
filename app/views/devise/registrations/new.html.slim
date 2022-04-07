@@ -4,6 +4,7 @@
       .card
         .bg-brand
           .card-header.bg-brand.mx-auto.justify-content-center.d-flex
+            = image_pack_tag 'OC_Logo.png', class: 'login-page-logo brand-name text-truncate'
         .card-body.px-5.pt-3.pb-5
           h2.text-brand.mb-4.text-center Sign Up
           - if resource.errors.any?
